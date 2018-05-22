@@ -1,4 +1,4 @@
-# Lantsberger-Scoring-Engine
+# Lab-Scoring-Management-Platform
 
 This project is intended to be a lab scoring and management platform that allows for the teacher to easily manage and score lab submissions from students. This platform provides for the teacher to easily track all students' lab submission. It also allows for the scoring of labs based upon the lab providing the correct input/output, similar to a fuzzer.
 
