@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public abstract class DBInteract 
 {
-	private Connection SQLcon = null;
+	protected Connection SQLcon = null;
 	private Statement myStatement;
 	private String table = "";
 	/**
@@ -20,16 +20,21 @@ public abstract class DBInteract
 		this.table = table;
 		try
 		{
-			SQLcon = DriverManager.getConnection("jdbc:mysql://localhost:3306/lsmp","root","");
+        	Class.forName("com.mysql.jdbc.Driver");
+            SQLcon = DriverManager.getConnection("jdbc:mysql://localhost/lsmp", "javacon", "password");
 			myStatement = SQLcon.createStatement();
 		}
 		catch(SQLException e)
 		{
 			System.out.print(e.getStackTrace());
+		} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 	
 	public Statement getStatement() {return myStatement;}
+	public Connection getConnection() {return SQLcon;}
 	public String getTable() {return table;}
 	
 	public abstract DBPullObject pull(int ID) throws SQLException;

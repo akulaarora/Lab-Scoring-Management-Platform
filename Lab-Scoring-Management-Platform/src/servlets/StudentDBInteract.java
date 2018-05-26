@@ -53,24 +53,40 @@ public class StudentDBInteract extends DBInteract
 		}
 		else
 		{
-			getStatement().executeUpdate("INSERT INTO "+getTable()+"(timestamp,"+column+")"
-				+ " VALUES("+format.format(d1)+","+pushData+")");
+			String sql = "UPDATE "+getTable()+" SET timestamp = ?, "+column+" = ? WHERE ID = ?";
+			PreparedStatement pS = getConnection().prepareStatement(sql);
+			pS.setString(1, format.format(d1));
+			pS.setInt(2, pushData);
+			pS.setInt(3, ID);
+			pS.executeUpdate();
 		}
 	}
 	
 	public void pushID(int ID) throws SQLException
 	{
+
 		getStatement().executeUpdate("INSERT INTO "+getTable()+"(ID) VALUES("+ID+")");
 	}
 	
 	public void pushPeriod(int ID,int period) throws SQLException
 	{
-		getStatement().executeUpdate("UPDATE "+getTable()+" SET Period = "+period+" WHERE ID = "+ID);
+		if(!checkIdExists(ID))
+			throw new IndexOutOfBoundsException();
+		else
+			getStatement().executeUpdate("UPDATE "+getTable()+" SET Period = "+period+" WHERE ID = "+ID);
 	}
 	
-	public void pushName(int ID, int name) throws SQLException
+	public void pushName(int ID, String name) throws SQLException
 	{
-		getStatement().executeUpdate("UPDATE "+getTable()+" SET name = "+name+" WHERE ID = "+ID);
+		if(!checkIdExists(ID))
+			throw new IndexOutOfBoundsException();
+		else
+		{
+			PreparedStatement pS = getConnection().prepareStatement("UPDATE "+getTable()+" SET name = ? WHERE ID = ? ");
+			pS.setString(1, name);
+			pS.setInt(2, ID);
+			pS.executeUpdate();
+		}
 	}
 	
 	public DBPullObject pull(int ID) throws SQLException
