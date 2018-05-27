@@ -1,3 +1,13 @@
+
+/**
+ * The abstract class for database interaction with the lsmp database
+ * Guarantees a connection and a return of row information
+ *
+ * @author Manseej Khatri
+ * @version 1.0
+ */
+
+
 package servlets;
 
 import java.sql.Connection;
@@ -7,7 +17,7 @@ import java.sql.Statement;
 
 public abstract class DBInteract 
 {
-	protected Connection SQLcon = null;
+	private Connection SQLcon = null;
 	private Statement myStatement;
 	private String table = "";
 	/**
@@ -33,9 +43,29 @@ public abstract class DBInteract
 		}
 	}
 	
+	/**
+	 * @return a statement object for sql queries
+	 * 
+	 */
 	public Statement getStatement() {return myStatement;}
+	
+	/**
+	 * gets a connection object to represent sql connection
+	 * @return the sql connection object
+	 */
 	public Connection getConnection() {return SQLcon;}
+	
+	/**
+	 * Gets the name of the table
+	 * @return the table name
+	 */
 	public String getTable() {return table;}
 	
-	public abstract DBPullObject pull(int ID) throws SQLException;
+	/**
+	 * guarantees row information
+	 * @param identifier the identifier for each row
+	 * @return the DBPullObject
+	 * @throws SQLException
+	 */
+	public abstract DBPullObject pull(int identifer) throws SQLException;
 }

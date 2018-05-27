@@ -10,7 +10,7 @@
  * statements will be specific
  *
  * @author Manseej Khatri
- * @version 0.1
+ * @version 1.0
  */
 
 
@@ -32,7 +32,7 @@ public class StudentDBInteract extends DBInteract
 	 */
 	public StudentDBInteract() throws SQLException
 	{
-		super("labDB");
+		super("labDB"); //creates a connection through the constructor
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class StudentDBInteract extends DBInteract
 	{
 		/*pushes values onto selected table*/
 		Date d1 = new Date();
-		DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); //for the timestamp
 		if(!checkIdExists(ID))
 		{
 			throw new IndexOutOfBoundsException();
@@ -62,12 +62,25 @@ public class StudentDBInteract extends DBInteract
 		}
 	}
 	
+	/**
+	 * Creates the id rows of the table
+	 * This should be done first before the other queries are made
+	 * To prevent an out of bounds error
+	 * @param ID the identification of the user
+	 * @throws SQLException
+	 */
 	public void pushID(int ID) throws SQLException
 	{
 
 		getStatement().executeUpdate("INSERT INTO "+getTable()+"(ID) VALUES("+ID+")");
 	}
 	
+	/**
+	 * Pushes a period onto the table of the user whose id is selected
+	 * @param ID the identification of the user
+	 * @param period the period in which the user is active in class
+	 * @throws SQLException
+	 */
 	public void pushPeriod(int ID,int period) throws SQLException
 	{
 		if(!checkIdExists(ID))
@@ -76,6 +89,12 @@ public class StudentDBInteract extends DBInteract
 			getStatement().executeUpdate("UPDATE "+getTable()+" SET Period = "+period+" WHERE ID = "+ID);
 	}
 	
+	/**
+	 * Pushes a name of the user onto the table of the user whose id is selected
+	 * @param ID the identification of the user 
+	 * @param name the name of the user
+	 * @throws SQLException 
+	 */
 	public void pushName(int ID, String name) throws SQLException
 	{
 		if(!checkIdExists(ID))
@@ -88,13 +107,17 @@ public class StudentDBInteract extends DBInteract
 			pS.executeUpdate();
 		}
 	}
-	
+	/**
+	 * Creates a pull object which represents all the data in a row
+	 * @param id the identification of the user 
+	 * @return row the DBPullObject in which the row is applicable
+	 */
 	public DBPullObject pull(int ID) throws SQLException
 	{
 		/*pulls values off the selected table*/
 		DBPullObject row = null;
 		
-		if(checkIdExists(ID))
+		if(!checkIdExists(ID))
 		{
 			throw new IndexOutOfBoundsException();
 		}
@@ -102,13 +125,15 @@ public class StudentDBInteract extends DBInteract
 		{
 			ResultSet set = getStatement().executeQuery("Select * from "+getTable()+" WHERE ID = "+ID);
 			set.next();
-			ArrayList<Integer> list = new ArrayList<>();
+			ArrayList<Integer> list = new ArrayList<>(); //gives all lab scores
 			String name = set.getString("name");
 			int period = set.getInt("Period");
 			String timestamp = set.getString("timestamp");
 			ResultSetMetaData rsmd = set.getMetaData();
 			
-			for(int i = 5; i <= rsmd.getColumnCount();i++)
+			/* all above creates an object of a row */
+			
+			for(int i = 5; i <= rsmd.getColumnCount();i++) //sets lab values
 			{
 				list.add(set.getInt(i));
 			}
@@ -118,14 +143,28 @@ public class StudentDBInteract extends DBInteract
 		return row;
 	}
 	
+	/**
+	 * Creates a lab column
+	 * @param columnName the name of the lab
+	 * @throws SQLException
+	 */
+	public void createLab(String columnName) throws SQLException
+	{
+		String sql = "ALTER TABLE "+getTable()+" ADD "+columnName+" TEXT";
+		PreparedStatement pS = getConnection().prepareStatement(sql);
+		pS.executeUpdate();
+	}
 	
+	/* checks if the ID is valid then returns true or false */
 	private boolean checkIdExists(int ID) throws SQLException
 	{
 		ResultSet set = getStatement().executeQuery("Select * from "+getTable()+" where ID = "+ID);
 		if(!set.next())
 		{
+			set.previous();
 			return false;
 		}
+		set.previous();
 		return true;
 	}
 	
