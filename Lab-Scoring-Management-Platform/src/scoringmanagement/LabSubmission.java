@@ -4,7 +4,7 @@ package scoringmanagement;
  * @author Akul Arora
  *
  */
-public class LabSubmisssion 
+public class LabSubmission 
 {
     private String myName;
     private String myPeriod;
