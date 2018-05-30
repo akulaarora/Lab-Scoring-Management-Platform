@@ -15,7 +15,7 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
 /**
- * Main scoring class for student lab submissions. Receives the student's lab files from the "studentSubmission" class
+ * Main scoring class for student lab submissions. Receives the student's lab files from the "LabSubmission" class
  * and compares them scoring various sections of the program based on the spec for said lab.
  *
  * @author Max, Darshan, Akul, Manseej
@@ -44,7 +44,7 @@ public class Scorer
      * @param Sends array of labFiles
      * @return scoreData array holds the score output of the student's lab and returns the output to their student client
      */
-    public static String[] scoreStudent(String[] labFiles)
+    public static void scoreStudent(String[] labFiles)
     {
         String[] scoreData = new String[5];//scoreData is returned to the 
        
@@ -137,7 +137,7 @@ public class Scorer
         //calls private methods and returns calculated string as output
         //Score does not store data in the database
         //Student submission calls score which returns the String[] of information and then Student submission call the dbinteract and enters all the information
-        return scoreData;
+        Score newScore = new Score(scoreData);
     }
     
     /*
