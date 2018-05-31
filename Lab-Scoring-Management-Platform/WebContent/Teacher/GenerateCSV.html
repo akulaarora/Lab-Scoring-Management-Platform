@@ -1,0 +1,43 @@
+<!-- TODO: Make this more user friendly. -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Generate CSVs</title>
+</head>
+<body>
+	<h1>Generate CSV files of scores</h1>
+	<form action="GenerateCSVServlet" method="get">
+		<p>Leave blank what you would not like to filter.</p>
+		<select name="lab">
+			<!-- TODO: This needs to be replaced with list of labs from servlet. -->
+			<option></option>
+			<option value="Lab1">Lab1</option>
+			<option value="Lab2">Lab2</option>
+			<option value="Lab3">Lab3</option>
+		</select>
+		<br />
+		
+		<input type="text" name="name" placeholder="type student name" />
+		<br />
+		<input type="text" name="id" placeholder="type school id" />
+		<br />
+		
+		<select name="period">
+			<option></option>
+			<option value="1">Period 1</option>
+			<option value="2">Period 2</option>
+			<option value="3">Period 3</option>
+			<option value="4">Period 4</option>
+			<option value="5">Period 5</option>
+		</select>
+		<br />
+		
+		
+			
+		
+		<input type="submit" value="Get Scores" />
+	</form>
+</body>
+</html>
