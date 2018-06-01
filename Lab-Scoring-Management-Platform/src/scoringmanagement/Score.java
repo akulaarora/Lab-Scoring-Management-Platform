@@ -14,7 +14,7 @@ import java.util.*;
 * -------------------------------------------            
 * inputNum-Score--inputExst-Compiled?-Runs?
 *
-* @author Max, Manseej, Darshan, Akul
+* @author Darshan & Max
 * @version 5/31
 */
 public class Score
@@ -85,7 +85,7 @@ public class Score
    }
    
    /**
-    * Setter used for interacting and manuipualintg the data within 
+    * Setter used for interacting and manipulating the data within the arrays
     */
    public void setCell(Object setInput, String selectedArray, int xCord, int yCord)
    {
@@ -109,11 +109,30 @@ public class Score
        }
    }
    
+   /**
+    * Retreives the entire studentScores array which holds the score and factors that influenced the score
+    * 
+    * @return Object[][] studentScores
+    */
    public Object[][] getStudentScores()
    {
        return studentScores;
    }
    
+   /**
+    * Retreives the entire labData array which holds additional information just for being displayed to the client
+    */
+   public Object[] getLabData()
+   {
+       return labData;
+   }
+   
+   /**
+   * Returns the data found in a single test run
+   * 
+   * @param int inputNum
+   * @return Object[] singleTestInput
+   */
    public Object[] getTestInput(int inputNum)
    {
        Object[] singleTestInput = new Object[studentScores[inputNum].length];
@@ -126,6 +145,12 @@ public class Score
        return singleTestInput;
    }
    
+   /**
+    * returns a single test input's score or if a number less than 0 is specified the program returns the scores of all tested inputs
+    * 
+    * @param int inputNum
+    * @return Double[] scoreList
+    */
    public Double[] getScore(int inputNum)
    {
        Double[] scoreList = new Double[studentScores.length];
@@ -145,6 +170,13 @@ public class Score
        return scoreList;
    }
    
+   /**
+    * returns a value describing if the program accepts input
+    * or if a number less than 0 is specified the program returns the scores of all tested inputs
+    * 
+    * @param int inputNum
+    * @return Boolean[] scoreList
+    */
    public Boolean[] getInputExists(int inputNum)
    {
        Boolean[] scoreList = new Boolean[studentScores.length];
