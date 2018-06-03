@@ -20,9 +20,9 @@ public class DBPullObject
 	private int period = -1;
 	private String lab = "";
 	private String spec = "";
-	
+	private ArrayList<String> filters = new ArrayList<>();
 	/**
-	 * Creates a database pull object for the labDB table
+	 * Creates a database pull object for the lab db tables
 	 * @param ID the identification of the user
 	 * @param name of said user
 	 * @param timestamp the time of submission
@@ -36,6 +36,11 @@ public class DBPullObject
 		this.timestamp = timestamp;
 		this.period = period;
 		labScore = labs;
+	}
+	
+	public DBPullObject(ArrayList<String> filters)
+	{
+		this.filters = filters;
 	}
 	
 	/**
@@ -90,5 +95,7 @@ public class DBPullObject
 	 * @return the scoring guidelines
 	 */
 	public String getSpec() {return spec;}
+	
+	public ArrayList<String> getFilter(){return filters;}
 	
 }
