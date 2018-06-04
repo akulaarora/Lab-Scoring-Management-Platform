@@ -16,11 +16,15 @@
 
 package scoringmanagement;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import com.opencsv.CSVWriter;
 
 public class StudentDBInteract extends DBInteract
 {
@@ -142,6 +146,84 @@ public class StudentDBInteract extends DBInteract
 		}
 		return row;
 	}
+	
+	public DBPullObject getLabNames() throws SQLException
+	{	
+		ArrayList<String> list = new ArrayList<>();
+		String sql = "select column_name from information_schema.columns where table_name=?";
+		
+		PreparedStatement pS = getConnection().prepareStatement(sql);
+		pS.setString(1, getTable());
+		ResultSet set = pS.executeQuery();
+		while(set.next())
+		{
+			if(set.getString(1).matches("lab.*"))
+				list.add(set.getString(1));
+		}
+		return new DBPullObject(list);
+	}
+	
+	/**
+	 * Generates a csv file representing the table and outputs it to a file called labDB.xml
+	 * Credit goes to:
+	 * @author Glen Smith
+	 * @author Scott Conway
+	 * @author Sean Sullivan
+	 * @author Kyle Miller
+	 * @author Tom Squires
+	 * @author Andrew Rucker Jones
+	 * @author Maciek Opala
+	 * @author J.C. Romanda
+	 * 
+	 * more information about the class itself go to http://opencsv.sourceforge.net/index.html
+	 * And please consider supporting them because they made my job so so so much easier
+	 * @throws SQLException 
+	 */
+	public void generateCSV(String filter) throws SQLException
+	{
+		String sql = "Select "+filter+" from "+getTable();
+		PreparedStatement pS = getConnection().prepareStatement(sql);
+		try {
+			CSVWriter writer = new CSVWriter(new FileWriter("labDB.csv"));
+			writer.writeAll(pS.executeQuery(),true);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void generateCSV(String[] filters) throws SQLException
+	{
+		String sql = "Select from "+getTable();
+		for(int i = 0; i<filters.length;i++)
+		{
+			sql = sql.substring(0,6)+" "+filters[i]+", "+sql.substring(7);
+			if(filters.length-1==i)
+			{
+				sql = sql.substring(0,sql.indexOf(filters[0])+filters[0].length())+sql.substring(sql.indexOf(filters[0])+filters[0].length());
+			}
+		}
+		PreparedStatement pS = getConnection().prepareStatement(sql);
+		
+		try 
+		{
+			CSVWriter writer = new CSVWriter(new FileWriter("labDB.csv"));
+			writer.writeAll(pS.executeQuery(),true);
+			writer.close();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void generateCSV() throws SQLException
+	{
+		this.generateCSV("*");
+	}
+	
+		
 	
 	/**
 	 * Creates a lab column
