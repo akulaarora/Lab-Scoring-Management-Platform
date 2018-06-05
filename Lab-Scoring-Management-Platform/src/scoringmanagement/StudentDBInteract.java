@@ -23,11 +23,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.io.File;
 import com.opencsv.CSVWriter;
 
 public class StudentDBInteract extends DBInteract
 {
+	private static final File FILE_PATH = new File("/csv/labDB.csv");
 
 	/**
 	 * Class constructor for Database interaction
@@ -184,16 +185,17 @@ public class StudentDBInteract extends DBInteract
 		String sql = "Select "+filter+" from "+getTable();
 		PreparedStatement pS = getConnection().prepareStatement(sql);
 		try {
-			CSVWriter writer = new CSVWriter(new FileWriter("labDB.csv"));
+			CSVWriter writer = new CSVWriter(new FileWriter(FILE_PATH.getPath()));
 			writer.writeAll(pS.executeQuery(),true);
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//return FILE_PATH;
 		
 	}
 	
-	public void generateCSV(String[] filters) throws SQLException
+	public File generateCSV(String[] filters) throws SQLException
 	{
 		String sql = "Select from "+getTable();
 		for(int i = 0; i<filters.length;i++)
@@ -208,7 +210,7 @@ public class StudentDBInteract extends DBInteract
 		
 		try 
 		{
-			CSVWriter writer = new CSVWriter(new FileWriter("labDB.csv"));
+			CSVWriter writer = new CSVWriter(new FileWriter(FILE_PATH.getPath()));
 			writer.writeAll(pS.executeQuery(),true);
 			writer.close();
 		}
@@ -216,6 +218,7 @@ public class StudentDBInteract extends DBInteract
 		{
 			e.printStackTrace();
 		}
+		return FILE_PATH;
 	}
 	
 	public void generateCSV() throws SQLException
