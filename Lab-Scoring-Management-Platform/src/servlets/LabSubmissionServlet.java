@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class LabSubmissionServlet. Allows for student to submit labs for scoring.
  * @author Akul Arora
+ * @version 06/01/2018.
  */
 
 @WebServlet("/Student/LabSubmissionServlet")

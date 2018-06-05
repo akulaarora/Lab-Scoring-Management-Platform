@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Servlet implementation class GenerateCSVServlet. Allows for teacher to retrieve CSV files of scores.
  * @author Akul Arora
+ * @version 06/01/2018
  */
 
 /**
