@@ -15,15 +15,21 @@ Date: 5/21/2018
 
 <body>
 	<h1>Student Lab Submission</h1>
-	<form action="LabSubmissionServlet" method="post"> <!-- Using post method for added security -->
 	
-		<input type="text" name="name" placeholder="type full name" />
+	<!--
+	 Using post method for added security.
+	 multipart="multipart/form-data" necessary for handling files
+	-->
+	<form action="LabSubmissionServlet" method="post" enctype="multipart/form-data" >
+	
+		<input type="text" name="name" placeholder="type full name" required />
 		<br />
 		
-		<input type="text" name="id" placeholder="type school id" />
+		<!-- Min/max insures that potentially correct integer value is entered -->
+		<input type="text" name="id" placeholder="type school id" min="1" max="9999999" required />
 		<br />
 		
-		<select name="period">
+		<select name="period" required >
 			<option value="1">Period 1</option>
 			<option value="2">Period 2</option>
 			<option value="3">Period 3</option>
@@ -32,14 +38,14 @@ Date: 5/21/2018
 		</select>
 		<br />
 		
-		<select name="lab"> <!-- TODO: This needs to be replaced with list of labs from servlet. -->
+		<select name="lab" required > <!-- TODO: This needs to be replaced with list of labs from servlet. -->
 			<option value="Lab1">Lab1</option>
 			<option value="Lab2">Lab2</option>
 			<option value="Lab3">Lab3</option>
 		</select>
 		<br />
 		
-		Files to Submit: <input type="file"  name="fileName" multiple="multiple"/>
+		Files to Submit: <input type="file"  name="files" multiple="multiple" required />
 		<br />
 		
 		<input type="submit" value="Submit Lab" />

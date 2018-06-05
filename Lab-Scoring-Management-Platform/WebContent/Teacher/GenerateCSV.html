@@ -1,15 +1,23 @@
+<!DOCTYPE html>
+
+<!-- 
+This the page for the teacher to generate a CSV file containing information.
+Author: Akul Arora
+Date: 05/29/2018
+-->
+
 <!-- TODO: Make this more user friendly. -->
 
-<!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Generate CSVs</title>
+<title>Generate CSV</title>
 </head>
 <body>
-	<h1>Generate CSV files of scores</h1>
+	<h1>Generate CSV Files of Scores</h1>
+	
 	<form action="GenerateCSVServlet" method="get">
-		<p>Leave blank what you would not like to filter.</p>
+		<p>Leave blank what you would not like to filter by.</p>
 		<select name="lab">
 			<!-- TODO: This needs to be replaced with list of labs from servlet. -->
 			<option></option>
@@ -33,9 +41,6 @@
 			<option value="5">Period 5</option>
 		</select>
 		<br />
-		
-		
-			
 		
 		<input type="submit" value="Get Scores" />
 	</form>
