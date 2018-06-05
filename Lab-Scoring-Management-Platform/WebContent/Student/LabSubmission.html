@@ -18,10 +18,9 @@ Date: 5/21/2018
 	
 	<!--
 	 Using post method for added security.
-	 Enctype (encryption) needed as a result.
-	 required to ensure input is given
+	 multipart="multipart/form-data" necessary for handling files
 	-->
-	<form action="LabSubmissionServlet" method="post" enctype="multipart/form-data">
+	<form action="LabSubmissionServlet" method="post" enctype="multipart/form-data" >
 	
 		<input type="text" name="name" placeholder="type full name" required />
 		<br />

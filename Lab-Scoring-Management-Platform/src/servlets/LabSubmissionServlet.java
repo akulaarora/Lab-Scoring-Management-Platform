@@ -4,10 +4,11 @@ import scoringmanagement.LabSubmission; // For submitting labs
 
 // For file uploads
 import org.apache.commons.fileupload.FileItem;
-//import org.apache.commons.fileupload.FileUpload;
+import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
-//import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.*;
 
 import java.util.*; // For Lists
 import java.io.File; // For files
@@ -70,25 +71,69 @@ public class LabSubmissionServlet extends HttpServlet
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		// Inputted values
-		LabSubmission submission = null;
+    	ServletFileUpload input = null; // equivalent of request, but for multipart/form-data
+    	Map<String,List<FileItem>> passedValues = null; // For handling all values passed (must parse multipart/form-data differently).
 		String name = null, labName = null;
 		int id = 0, period = 0;
-		List<File> fileNames = null;
+		List<File> fileNames = null; // returned from fileUpload() method
+		
+		LabSubmission submission = null; // For submitting lab
+		PrintWriter out = response.getWriter(); // Output
 		
 		// Temporary values for method to work
 		String folderName; // Based upon the id, period, lab
 		boolean correctInput = true;
 		
-		// Output
-		PrintWriter out = response.getWriter();
+		/* For testing parameters passed. If not using form-data.
+		 * https://stackoverflow.com/questions/17281446/how-to-request-getparameternames-into-list-of-strings
+		List<String> parameterNames = new ArrayList<String>(request.getParameterMap().keySet());
+		for (String x : parameterNames)
+		{
+			System.out.println(x);
+		}
 		
-		// Get variable values (convert to integer if needed)
-		name = request.getParameter("name");
-		labName = request.getParameter("lab");
+		 * If using form-data
+		 * Courtesy of https://stackoverflow.com/questions/6385282/how-to-send-multipart-data-and-text-data-from-html-form-to-jsp-page
+		 List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		 for (FileItem item : items) {
+		    if (item.isFormField()) {
+		        // Process regular form field (input type="text|radio|checkbox|etc", select, etc).
+		        String fieldname = item.getFieldName();
+		        String fieldvalue = item.getString();
+		        System.out.println(fieldname);
+		        System.out.println(fieldvalue);
+		        // ... (do your job here)
+		    } else {
+		        // Process form file field (input type="file").
+		        String fieldname = item.getFieldName();
+		        String filename = FilenameUtils.getName(item.getName());
+		        System.out.println(fieldname);
+		        System.out.println(filename);
+		        // ... (do your job here)
+		    }
+		}
+		*/
+		
+		
+		// Get values passed
 		try
 		{
-			id = Integer.parseInt(request.getParameter("id"));
-			period = Integer.parseInt(request.getParameter("period"));
+			input = new ServletFileUpload(new DiskFileItemFactory());
+			passedValues = input.parseParameterMap(request);
+		}
+		catch (FileUploadException e) 
+		{
+			e.printStackTrace();
+			out.write("Error - please try again later."); // Generic error output to user
+		}
+		
+		// Get non-file values (convert to integer if needed)
+		name = passedValues.get("name").get(0).getString(); // Chain - List of FileItems, first FileItem (only FileItem), String value passed
+		labName = passedValues.get("lab").get(0).getString();
+		try
+		{
+			id = Integer.parseInt(passedValues.get("id").get(0).getString());
+			period = Integer.parseInt(passedValues.get("period").get(0).getString());
 		}
 		catch(NumberFormatException e) // Catches parsing errors. Should only be an issue with IDs (direct user input).
 		{
@@ -96,73 +141,70 @@ public class LabSubmissionServlet extends HttpServlet
 			out.write("Please enter an integer value for the id.");
 			correctInput = false;
 		}
-		catch(NullPointerException e) // Should never hit this, since required in html form.
+		catch(NullPointerException e) // Should never hit this, since required in html form input.
 		{
-			System.out.println(e); // debugging
+			System.out.println(e);
 			out.write("Please provide all required input." );
 			correctInput = false;
 		}
+		
 		
 		// Begins execution of scoring and management of lab only if correct input was provided.
 		if (correctInput == true)
 		{
 			// File upload
 			folderName = id + "-" + period + "-" + labName;
-			fileNames = fileUpload(request, folderName);
+			fileNames = fileUpload(passedValues.get("files"), folderName);
 			
 			// Submit lab for scoring and addition to management system. Will only continue if files were uploaded properly.
 			//if (fileNames == null)
 				// Instantiate submission object
 				//submission = new LabSubmission(name, period, id, labName, fileNames);
 		}
+		
+		
 	}
 	
-	// For handling file uploads. Will return list of filenames to handle
-	private List<File> fileUpload(HttpServletRequest request, String folderName)
+	// For handling file uploads. 
+    // Takes input of List of files sent.
+    // Will return list of filenames (full directory) to handle in scoring.
+	private List<File> fileUpload(List<FileItem> passedFiles, String folderName)
 	{
-		ServletFileUpload fileUpload = new ServletFileUpload(); // For receiving files uploaded
-		String uploadFolder = UPLOAD_DIR + folderName; // Where to upload to
-		List<File> fileNames = new ArrayList<>(10); // Return
+		File uploadFolder = new File(UPLOAD_DIR + "/" + folderName); // Where to upload to
+		List<File> filespaths = new ArrayList<File>(3); // Return
 		
 		// For method use
-		List<FileItem> filesList = null;
-		File fileName; // Strings but for files
-		boolean filesParsed = true; // Ensures execution only continues if files were parsed correctly
+		String filename;
+		File filepath;
 		
+		// Creates necessary folders
+		uploadFolder.mkdirs(); // Makes necessary directories/folders
 		
-		// Parses files submitted
-		try 
+		// Traverses list of files
+		for (FileItem file : passedFiles) 
 		{
-			filesList = fileUpload.parseRequest(request);
-		} 
-		catch (FileUploadException e) 
-		{
-			e.printStackTrace();
-			filesParsed = false;
+			// Get file path and filename
+			// FileNameUtils converts from full path to just filename
+			// See more here: http://commons.apache.org/proper/commons-fileupload/faq.html#whole-path-from-IE
+	        filename = FilenameUtils.getName(file.getName()); // Get filename
+	        System.out.println(filename);
+	        
+	        filepath = new File(uploadFolder + "/" + filename); // Get new file path
+	        filespaths.add(filepath); // Add filepath to list of file paths
+	        System.out.println(uploadFolder + "/" + filename); // TODO For debugging
+	        
+	        // Upload file
+	        try
+	        {
+				file.write(filepath); // Creates file
+			}
+	        catch (Exception e) // Any issue with file uploading 
+	        {
+				e.printStackTrace();
+			}
 		}
 		
-		// File uploading
-		if (filesParsed == true) // Only executes file uploading to system if files were parsed correctly
-		{
-			for (FileItem file : filesList)
-				if (!file.isFormField()) // Ensures valid input
-				{
-					fileName = new File(file.getName());
-					fileNames.add(new File(UPLOAD_DIR + "/" + fileName));
-					
-					try 
-					{
-						file.write(fileNames.get(fileNames.size()-1)); // Creates file. Gets last File added (the one just added to the fileNames list).
-					}
-					catch (Exception e) // General exceptions with file creation/uploading
-					{
-						e.printStackTrace();
-					}
-				}
-		}
-		
-		
-		return fileNames;
+		return filespaths;
 	}
 
 }
