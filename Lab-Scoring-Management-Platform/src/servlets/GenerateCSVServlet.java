@@ -1,7 +1,5 @@
 package servlets;
 
-
-
 import scoringmanagement.*; // For csvs // TODO Use specific classes
 // For reading and sending files
 import java.io.FileInputStream;
@@ -25,23 +23,22 @@ import javax.servlet.http.HttpServletResponse;
  * @version 06/01/2018
  */
 
-/**
- * Servlet implementation class GenerateCSVServlet
- */
 @WebServlet("/Teacher/GenerateCSVServlet")
-public class GenerateCSVServlet extends HttpServlet {
+public class GenerateCSVServlet extends HttpServlet
+{
 	private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor. 
      * @param none
      */
-    public GenerateCSVServlet() {
+    public GenerateCSVServlet()
+    {
     	// Object created by form action call. Nothing to be done here. 
         // TODO Auto-generated constructor stub
     }
 
-	/**
+    /**
 	 * To not be used for these purposes. Unsafe.
 	 * Sends error stating to use POST method.
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -49,8 +46,8 @@ public class GenerateCSVServlet extends HttpServlet {
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		response.getWriter().append("Using a GET call poses risks."
-				+ "Please use the POST method through the Lab Submission page provided.");
+		response.getWriter().append("Using a GET call for submitting certain data poses risks."
+				+ "Please use the POST method provided.");
 		/*
 		 * Default
 		 * response.getWriter().append("Served at: ").append(request.getContextPath());
@@ -63,8 +60,8 @@ public class GenerateCSVServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		// For retrieving data
-		ScoringDBInteract scoringData = new ScoringDBInteract();
+    	// For retrieving data
+		//ScoringDBInteract scoringData = new ScoringDBInteract();
 		List<String> filters = new ArrayList<String>(3);
 		Enumeration<String> names = request.getParameterNames();
 		String filter;
@@ -82,12 +79,20 @@ public class GenerateCSVServlet extends HttpServlet {
 			filters.add(filter);
 		}
 		
-		csvFile = scoringData.generateCSV(filters); // Generate CSV
+		//csvFile = scoringData.generateCSV(filters); // Generate CSV
 		
+		// Modify response's attributes
+		response.setContentType("text/plain");
+		response.setHeader("Content-disposition", "attachment; filename="+ csvFile.getName());
+	
 		// Send CSV file to teacher
-		while ((bytes = fileInputStream.read()) != -1) {
+		fileInputStream = new FileInputStream(new File("C:/Users/Akul/Downloads/_socket.pyd"));
+		while ((bytes = fileInputStream.read()) != -1) 
 			responseOutputStream.write(bytes);
-		}
-	}
+		
+		fileInputStream.close();
+		responseOutputStream.close();
+		
 
+	}
 }

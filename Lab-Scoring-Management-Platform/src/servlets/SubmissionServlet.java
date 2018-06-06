@@ -50,7 +50,7 @@ public abstract class SubmissionServlet extends HttpServlet
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		response.getWriter().append("Using a GET call for submitting certain dataS poses risks."
+		response.getWriter().append("Using a GET call for submitting certain data poses risks."
 				+ "Please use the POST method provided.");
 		/*
 		 * Default
