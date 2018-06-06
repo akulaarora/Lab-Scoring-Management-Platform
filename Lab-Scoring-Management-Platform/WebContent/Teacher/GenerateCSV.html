@@ -16,7 +16,7 @@ Date: 05/29/2018
 <body>
 	<h1>Generate CSV Files of Scores</h1>
 	
-	<form action="GenerateCSVServlet" method="get">
+	<form action="GenerateCSVServlet" method="post">
 		<p>Leave blank what you would not like to filter by.</p>
 		<select name="lab">
 			<!-- TODO: This needs to be replaced with list of labs from servlet. -->
@@ -42,7 +42,7 @@ Date: 05/29/2018
 		</select>
 		<br />
 		
-		<input type="submit" value="Get Scores" />
+		<button>Get Scores</button>
 	</form>
 </body>
 </html>
