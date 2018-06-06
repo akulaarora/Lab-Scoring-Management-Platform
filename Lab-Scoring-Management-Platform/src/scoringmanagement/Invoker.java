@@ -43,12 +43,10 @@ public class Invoker
 {
     public static void main(String[] args)//Tester to be removed
     {
-        String testLab = "public class HelloWorld {\n public static void main(String[] args) {\n System.out.println(\"Hello world!\");\n }\n }\n";
-        String[] labFiles = new String[1];
-        labFiles[0] = testLab;
+        String labFile = "public class HelloWorld {\n public static void main(String[] args) {\n System.out.println(\"Hello world!\");\n }\n }\n";
         
-        compileLab("lab30", "1999935", labFiles);
-        runProgram("lab30", "1999935", "HelloWorld", 3);
+        compileLab("lab30", "1999935", labFile);
+        runProgram("lab30", "1999935", "HelloWorld");
         
     }
  
@@ -68,11 +66,11 @@ public class Invoker
      * @param String ID
      * @param String[] labFiles
      */
-    public static boolean compileLab(String labName, String ID, String[] labFiles)
+    public static boolean compileLab(String labName, String ID, String labFile)
     {
         boolean testCompile = false;
         StringBuilder labString = new StringBuilder(64);
-        labString.append(labFiles[0]);
+        labString.append(labFile);
        
         //CHANGE TO SERVER DIRECTORY using labName and ID
         File helloWorldJava = new File("C:/Users/^Water_Bear/Desktop/compiletest/HelloWorld.java");
@@ -127,7 +125,7 @@ public class Invoker
                     @SuppressWarnings("resource")
                     URLClassLoader classLoader = new URLClassLoader(new URL[]{new File("./").toURI().toURL()});
                     // Load the class from the classloader by name....
-                    Class<?> loadedClass = classLoader.loadClass("testcompile.HelloWorld");
+                    Class<?> loadedClass = classLoader.loadClass("C:/Users/^Water_Bear/Desktop/compiletest/HelloWorld");
                     // Create a new instance...
                     Object obj = loadedClass.newInstance();
                     /************************************************************************************************* Load and execute **/
@@ -161,11 +159,10 @@ public class Invoker
      * @param String classFileName
      * @param String labName
      * @param String ID
-     * @param int trialNum
      */
-    public static void runProgram(String labName, String ID, String classFileName, int trialNum)
+    public static void runProgram(String labName, String ID, String classFileName)
     {
-        outputConsole(labName, ID, trialNum);
+        outputConsole(labName, ID);
    
         Class[] argTypes = new Class[1];
         argTypes[0] = String[].class;
@@ -176,9 +173,6 @@ public class Invoker
             (classFileName).getDeclaredMethod("main",argTypes);
             Object[] argListForInvokedMain = new Object[1];
             argListForInvokedMain[0] = new String[0];
-            // Place whatever args you
-            // want to pass into other
-            // class's main here.
  
             mainMethod.invoke(null, argListForInvokedMain);
  
@@ -209,13 +203,12 @@ public class Invoker
      * 
      * @param int trialNum - Sets the txt file name
      * @param String labName
-     * @param int trialNum
      */
-    public static void outputConsole(String labName, String ID, int trialNum)
+    public static void outputConsole(String labName, String ID)
     {
         try
         {//set to environment variables using ID and labname
-            System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream("C:/Users/^Water_Bear/Desktop/compiletest/output" + trialNum + ".txt")), true));
+            System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream("C:/Users/^Water_Bear/Desktop/compiletest/output.txt")), true));
         }
         catch(Exception e)
         {
