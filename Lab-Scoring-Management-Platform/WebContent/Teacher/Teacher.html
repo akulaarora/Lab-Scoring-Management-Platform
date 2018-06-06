@@ -28,8 +28,9 @@ Date: 5/21/2018
 	<br />
 	
 	<p>Create a lab. Upload lab specifics file: </p>
-	<form action="CreateLabServlet" method="post">
-		<input type="file" name="fileName" />
+	<form action="SpecSubmissionServlet" method="post" enctype="multipart/form-data">
+		<input type="file" name="file" required />
+		<button>Submit</button>
 	</form>
 
 </body>
