@@ -21,15 +21,16 @@ Date: 5/21/2018
 	<br />
 	<br />
 	
-	<a href="HowToCreateLab.html"> <!-- TODO: Need to create using markdown. Also, provide sample file. -->
+	<a href="LabSpecCreation.html">
 		<button>How to Create a Lab</button>
 	</a>
 	<br />
 	<br />
 	
 	<p>Create a lab. Upload lab specifics file: </p>
-	<form action="CreateLabServlet" method="post">
-		<input type="file" name="fileName" />
+	<form action="SpecSubmissionServlet" method="post" enctype="multipart/form-data">
+		<input type="file" name="file" required />
+		<button>Submit</button>
 	</form>
 
 </body>
