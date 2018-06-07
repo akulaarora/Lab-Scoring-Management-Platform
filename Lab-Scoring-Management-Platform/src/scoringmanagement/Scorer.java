@@ -52,7 +52,7 @@ public class Scorer
      * @param Sends array of labFiles
      * @return scoreData array holds the score output of the student's lab and returns the output to their student client
      */
-    public static void scoreStudent(String labSpec, String[] labFiles, String[] labNames)
+    public static Score scoreStudent(String labSpec, String[] labFiles, String[] labNames)
     {
         Object[] scoreData;
         Object[] labData;
@@ -88,6 +88,7 @@ public class Scorer
         
         //Score object instantiated - use getters to access its components
         Score studentScore = new Score(scoreData, labData);
+        return studentScore;
     }
     
     /**
