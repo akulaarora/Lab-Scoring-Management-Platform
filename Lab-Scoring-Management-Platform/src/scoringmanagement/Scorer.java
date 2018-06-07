@@ -75,7 +75,7 @@ public class Scorer
         testExec = Invoker.runProgram("Driver");
         
         //Score the lab
-        score = getScore(labSpec, testExec, testCompile);
+        score = calcScore(labSpec, testExec, testCompile);
         
         //Create user stats
         numCom = numComments();
@@ -100,7 +100,7 @@ public class Scorer
      * 
      * @return double avgScore
      */
-    public static double getScore(String specName, boolean testExec, boolean testComp)
+    public static double calcScore(String specName, boolean testExec, boolean testComp)
     {
         FileInput correctFile = new FileInput("C:/Users/^Water_Bear/Desktop/temp/output.txt");
         FileInput wrongFile;
