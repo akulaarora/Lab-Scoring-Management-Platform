@@ -1,3 +1,5 @@
+package scoringmanagement;
+
 import java.util.*;
 
 /**
@@ -105,17 +107,17 @@ public class Score
    }
    
    /**
-    * returns a user's score.
+    * Returns a user's score.
     * 
-    * @return Integer intScore
+    * @return int score
     */
-   public Integer getScore()
+   public int getScoreValue()
    {
        Double score;
        Integer intScore;
        score = (Double)studentScores[0];//Typecasts the returned double as a Double object
        intScore = (int)score.doubleValue();//Takes the double and typecasts as an int and then returns as an Integer for the DB to be able to handle it
-       return intScore;
+       return intScore.intValue();
    }
    
    /**

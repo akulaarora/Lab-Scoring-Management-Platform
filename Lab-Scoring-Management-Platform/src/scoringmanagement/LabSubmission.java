@@ -174,7 +174,7 @@ public class LabSubmission
     public void setScore()
     {
     	Score score;
-    	ScoringDBInteract dbInteract = new ScoringDBInteract();
+    	ScoringDBInteract dbInteract;
     	
     	// Get score
     	score = Scorer.scoreLab(getLabName(), getFiles());
@@ -182,6 +182,7 @@ public class LabSubmission
     	 // Pushes name and id to database.
     	try
     	{
+    		dbInteract = new ScoringDBInteract();
     		dbInteract.pushName(getID(), getName());
     		dbInteract.pushScore(getScore().getScoreValue(), getID(), myLabName); // Pushes score
     	}
