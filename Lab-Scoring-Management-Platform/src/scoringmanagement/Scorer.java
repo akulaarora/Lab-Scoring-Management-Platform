@@ -110,14 +110,19 @@ public class Scorer
         Double score;
         Integer numCom, numAck, numDoc, numRet;
         
+        // Create java files
+        for(int i = 0; i < labFiles.length; i++)
+        {
+            System.out.println(labNames[i]);
+            System.out.println(labFiles[i]);
+            Invoker.createSource(labNames[i], labFiles[i]);
+        }
         
-        //COMPILE THE LABS
+        //COMPILE THE java files
         for(int i = 0; i < labFiles.length; i++)
         {
             Boolean compOutput;
-            System.out.println(labNames[i]);
-            System.out.println(labFiles[i]);
-            compOutput = Invoker.compileLab(labNames[i], labFiles[i]);
+            compOutput = Invoker.compileClass(labNames[i], labFiles[i]);
             if(compOutput = true)
                 testCompile = true;
         }
