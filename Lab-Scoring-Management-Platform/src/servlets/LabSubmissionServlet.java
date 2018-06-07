@@ -145,6 +145,7 @@ public class LabSubmissionServlet extends SubmissionServlet
 			// Submit lab for scoring and addition to management system. Will only continue if files were uploaded properly.
 			// Instantiate submission object
 			submission = new LabSubmission(name, period, id, labName, fileNames);
+			out.write(submission.toString()); // Send output
 		}
 	}
     

@@ -157,6 +157,11 @@ public class LabSubmission
     public String toString()
     {
     	String output = "";
+    	output += "Name: " + getName() + "\n";
+    	output += "ID: " + getID() + "\n";
+    	output += "Period: " + getPeriod() + "\n";
+    	output += "Lab Name: " + getLabName() + "\n";
+    	output += "Score: " + getScore().getScoreValue() + "\n";
     	
     	return output;
     }
@@ -172,7 +177,7 @@ public class LabSubmission
     	ScoringDBInteract dbInteract = new ScoringDBInteract();
     	
     	// Get score
-    	score = Scorer.scoreLab();
+    	score = Scorer.scoreLab(getLabName(), getFiles());
     	
     	 // Pushes name and id to database.
     	try
