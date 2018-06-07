@@ -1,6 +1,10 @@
 package servlets;
 
 import dbinteract.ScoringDBInteract; // For getting list of labs and generating CSVs
+
+import java.util.Map;
+import java.util.HashMap;
+
 // For reading and sending files
 import java.io.FileInputStream;
 import java.io.OutputStream;
@@ -72,38 +76,53 @@ public class GenerateCSVServlet extends HttpServlet
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
     	// For retrieving data
-		//ScoringDBInteract scoringData = new ScoringDBInteract();
-		List<String> filters = new ArrayList<String>(3);
-		Enumeration<String> names = request.getParameterNames();
-		String filter;
+		ScoringDBInteract dbInteract;
+		Map<String, String> filters = new HashMap<String,String>();
 		
 		// For sending file to teacher
 		FileInputStream fileInputStream = null;
 		OutputStream responseOutputStream = response.getOutputStream();
 		File csvFile = null; // Filename
+		
+		// Method use
+		Map<String, String[]> temp;
 		int bytes;
+		boolean getsFile = true;
 		
 		// Create list of filters to be passed
-		while (names.hasMoreElements())
+		temp = request.getParameterMap();
+		for (String filter : temp.keySet()) // Converts to <String, String>. Only one value.
 		{
-			filter = request.getParameter(names.nextElement());
-			filters.add(filter);
+			filters.put(filter, temp.get("filter")[0]);
 		}
 		
-		//csvFile = scoringData.generateCSV(filters); // Generate CSV
+		try
+		{
+			dbInteract = new ScoringDBInteract(); // Instantiate interaction with database
+			csvFile = dbInteract.generateCSV(filters); // Generate CSV
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			response.getWriter().write("Error communicating with database. Please try again later.");
+			getsFile = false;
+		}
 		
-		// Modify response's attributes
-		response.setContentType("text/plain");
-		response.setHeader("Content-disposition", "attachment; filename="+ csvFile.getName());
-	
-		// Send CSV file to teacher
-		fileInputStream = new FileInputStream(new File("C:/Users/Akul/Downloads/_socket.pyd"));
-		while ((bytes = fileInputStream.read()) != -1) 
-			responseOutputStream.write(bytes);
+		// Will only continue if file was received
+		if (getsFile)
+		{
+			// Modify response's attributes
+			response.setContentType("text/plain");
+			response.setHeader("Content-disposition", "attachment; filename="+ csvFile.getName());
 		
-		fileInputStream.close();
+			// Send CSV file to teacher
+			fileInputStream = new FileInputStream(csvFile);
+			while ((bytes = fileInputStream.read()) != -1) 
+				responseOutputStream.write(bytes);
+			
+			fileInputStream.close();
+		}
 		responseOutputStream.close();
-		
 
 	}
 }

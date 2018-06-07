@@ -43,7 +43,7 @@ public class LabSubmission
     	myID = id;
     	myLabName = lab;
     	myFiles = files;
-    	myScore = Scorer.getScore(myLabName, myFiles);
+    	myScore = Scorer.studentScore(myLabName, myFiles);
     }
     
     /**
@@ -91,7 +91,7 @@ public class LabSubmission
     {
     	myFiles = files;
     	if (getLabName() != "")
-    		myScore = Scorer.score(getLabName(), getFiles());
+    		myScore = Scorer.studentScore(getLabName(), getFiles());
     }
     
     /**

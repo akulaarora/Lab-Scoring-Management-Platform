@@ -1,5 +1,6 @@
 package servlets;
 
+import dbinteract.ScoringDBInteract; // For submitting labs to database
 import scoringmanagement.LabSubmission; // For submitting labs
 
 // For file uploads
@@ -16,6 +17,7 @@ import java.io.File;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,33 +49,54 @@ public class SpecSubmissionServlet extends SubmissionServlet
     
 	/**
 	 * Receives user input of lab spec. Stores to server for later use.
-	 * The filename is what is stored as the lab name for students to submit.
+	 * The filename is what is stored as the lab name in the database.
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
     	ServletFileUpload input = null; // equivalent of request, but for multipart/form-data
+    	ScoringDBInteract dbInteract = null;
 		FileItem specFile = null;
 		PrintWriter out = response.getWriter(); // Output
+		
+		boolean isWorking = true;
 		
 		// Get values passed
 		try
 		{
-			input = new ServletFileUpload(new DiskFileItemFactory());
+			input = new ServletFileUpload(new DiskFileItemFactory()); // Instantiate input
 			// Gets map of parameters. Gets file parameter (list of all parameters with name file).
 			// Gets first and only file value.
 			specFile = input.parseParameterMap(request).get("file").get(0);
+			// Upload file
+			fileUpload(specFile);
 		}
 		catch (FileUploadException e) 
 		{
+			isWorking = false;
 			e.printStackTrace();
-			out.write("Error - please try again later."); // Generic error output to user
+			out.write("Error uploading file. Please try again later."); // Generic error output to user
 		}
 		
-		fileUpload(specFile);
+		// Add to database name of lab
+		try
+		{
+			if (isWorking) // Will only run if so far has been working. Otherwise, will not continue.
+			{
+				dbInteract = new ScoringDBInteract();
+				dbInteract.createLab(specFile.getName());
+			}
+		}
+		catch (SQLException e)
+		{
+			isWorking = false;
+			out.write("Error writing to database. Please try again later.");
+		}
 		
-		out.write("Lab has been submitted!");
+		
+		if (isWorking)
+			out.write("Lab has been submitted!");
 	}
     
     /**
