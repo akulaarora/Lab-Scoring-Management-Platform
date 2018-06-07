@@ -1,7 +1,4 @@
-/**
- * First program
- */
-public class TestScore
+public class ScoreTester
 {
     public static void main(String[] args)
     {

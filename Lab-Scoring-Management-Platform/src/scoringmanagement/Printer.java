@@ -1,9 +1,4 @@
-
-/**
- * Working class
- *
- */
-public class Printer
+public class PrinterTester
 {
     /**
      * This program prints a predefined string
