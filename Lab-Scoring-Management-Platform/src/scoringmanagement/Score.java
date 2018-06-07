@@ -1,16 +1,14 @@
-package scoringmanagement;
-
 import java.util.*;
 
 /**
 * Companion class to Scorer. Places the values Scorer writes into an object and stores it for further manipulation if required. 
-* studentScores array holds the score defined as (avg output correct/ avg output 
+* studentScores array holds the score defined as (output correct/ output incorrect)*30+10(compiles)+10(executes)=possible total of 50 pnts.
 * A seperate array stores unscored aspects of the program with data only as feedback for the client.
 * 
 * Example format:
 * studentScores array                 labData array
 * ------------------------            ----------------------------------
-* 20.0  | False   | True |            | 56    | 5       | 2   | 5      |
+* 20  | False   | True |            | 56    | 5       | 2   | 5      |
 * ------------------------            ----------------------------------
 * Score--Compiled?-Runs?             #comments-#JavaDocs-#Break-#return       
 * 
@@ -20,19 +18,16 @@ import java.util.*;
 */
 public class Score
 {
-   private Object[] studentScores; 
-   private Object[] labData;
+   private Object[] studentScores;//Holds scored stats
+   private Object[] labData;//Holds unscored stats
    
    /**
-    * Default constructor. Defines a small of unset data. Most definityl requires "setCell" method to configure to appropriate values.
+    * Default constructor. Defines a small of unset data. Use "setCell" method to configure to appropriate values.
     */
    public Score()
    {        
-      Object[] studentScores = new Object[] {0.0, false, false};//defines scored data
-      
-    
-      Object[] labData = new Object[]{
-      0, 0, 0, 0};//defines general data
+      Object[] studentScores = new Object[] {new Integer(0), new Boolean(false), new Boolean(false)};//defines scored data
+      Object[] labData = new Object[]{new Integer(0), new Integer(0), new Integer(0), new Integer(0)};//defines general data
    }
    
    /**
@@ -49,17 +44,21 @@ public class Score
        
        for(int i=0; i < scores.length; i++)
        {
-           studentScores[i] = scores[i];//Copy data into studentScores
+           studentScores[i] = scores[i];//Copy data(scores) into studentScores
        }
        
        for(int k=0; k < generalData.length; k++)
        {
-           labData[k] = generalData[k];//Copy data into labData
+           labData[k] = generalData[k];//Copy data(generalData) into labData
        }
    }
    
    /**
-    * Setter used for interacting and manipulating the data within the arrays
+    * Setter used for interacting and manipulating the data within the arrays.
+    * 
+    * @param Object setInput
+    * @param String selectedArray
+    * @param int xCord
     */
    public void setCell(Object setInput, String selectedArray, int xCord)
    {
@@ -67,13 +66,13 @@ public class Score
        {
            if(selectedArray.equals("studentScores"))
            {
-               studentScores[xCord] = setInput;
+               studentScores[xCord] = setInput;//Sets col value of an index in studentScores array
            }
            else
            {
                if(selectedArray.equals("labData"))
                {
-                   labData[xCord] = setInput;
+                   labData[xCord] = setInput;//Sets col value of an index in labData array
                }
            }
        }
@@ -84,118 +83,122 @@ public class Score
    }
    
    /**
-    * Retreives the entire studentScores array which holds the score and factors that influenced the score
+    * Retreives the entire studentScores array which holds the score and factors that influenced the score.
+    * Format = (Scores, compiled?, executes?)
     * 
     * @return Object[] studentScores
     */
    public Object[] getStudentScores()
    {
-       return studentScores;
+       return studentScores;//return the object[] array
    }
    
    /**
-    * Retreives the entire labData array which holds additional information just for being displayed to the client
+    * Retreives the entire labData array which holds additional information just for being displayed to the client.
+    * Format = (#comments, #javaDocs, #break, #return)
+    * 
+    * @return Object[] labData
     */
    public Object[] getLabData()
    {
-       return labData;
+       return labData;//return the object[] array
    }
    
    /**
-    * returns a  test input's score
+    * returns a user's score.
     * 
-    * @return Double scoreList
+    * @return Integer intScore
     */
-   public Double getScoreValue()
+   public Integer getScore()
    {
-       Double scoreList;
-       
-       scoreList = (Double)studentScores[0];
-       
-       return scoreList;
+       Double score;
+       Integer intScore;
+       score = (Double)studentScores[0];//Typecasts the returned double as a Double object
+       intScore = (int)score.doubleValue();//Takes the double and typecasts as an int and then returns as an Integer for the DB to be able to handle it
+       return intScore;
    }
    
    /**
-    * returns a  test input's compilationResults. Tests to see if the java file can even compile correctly
+    * returns a user's compilationResults. Tests to see if the java file can even compile correctly.
     * 
-    * @return Boolean scoreList
+    * @return Boolean testCompile
     */
    public Boolean getCompileResults()
    {
-       Boolean scoreList;
+       Boolean testCompile;
        
-       scoreList = (Boolean)studentScores[1];
+       testCompile = (Boolean)studentScores[1];//Typecasts the returned boolean as a Boolean object
        
-       return scoreList;
+       return testCompile;
    }
    
    /**
-    * returns a  test input's ExecutionResults. Tests to see if the java file can execute correctly
+    * returns a user's ExecutionResults. Tests to see if the java class file(s) can run without crash or exception.
     * 
-    * @return Boolean scoreList
+    * @return Boolean testExec
     */
    public Boolean getExecutionResults()
    {
-       Boolean scoreList;
+       Boolean testExec;
        
-       scoreList = (Boolean)studentScores[2];
+       testExec = (Boolean)studentScores[2];//Typecasts the returned boolean as a Boolean object
        
-       return scoreList;
+       return testExec;
    }
    
    /**
     * returns the total number of comments in all the programs combined.
     * 
-    * @return Integer scoreList
+    * @return Integer numComments
     */
    public Integer getNumComments()
    {
-       Integer scoreList;
+       Integer numComments;
        
-       scoreList = (Integer)labData[0];
+       numComments = (Integer)labData[0];//Typecasts the returned int as an Integer object
 
-       return scoreList;
+       return numComments;
    }
    
    /**
     * returns the total number of JavaDocs in all the programs combined.
     * 
-    * @return Integer scoreList
+    * @return Integer numJavaDocs
     */
    public Integer getNumJavaDocs()
    {
-       Integer scoreList;
+       Integer numJavaDocs;
        
-       scoreList = (Integer)labData[1];
+       numJavaDocs = (Integer)labData[1];//Typecasts the returned int as an Integer object
 
-       return scoreList;
+       return numJavaDocs;
    }
    
    /**
-    * returns the total number of break in all the programs combined.
+    * returns the total number of break statements in all the programs combined.
     * 
-    * @return Integer scoreList
+    * @return Integer numBreaks
     */
    public Integer getAckNum()
    {
-       Integer scoreList;
+       Integer numBreaks;
        
-       scoreList = (Integer)labData[2];
+       numBreaks = (Integer)labData[2];//Typecasts the returned int as an Integer object
 
-       return scoreList;
+       return numBreaks;
    }
    
    /**
     * returns the total number of return statements in all the programs combined.
     * 
-    * @return Integer scoreList
+    * @return Integer numReturns
     */
    public Integer getRetNum()
    {
-       Integer scoreList;
+       Integer numReturns;
        
-       scoreList = (Integer)labData[3];
+       numReturns = (Integer)labData[3];//Typecasts the returned int as an Integer object
 
-       return scoreList;
+       return numReturns;
    }
 }
