@@ -44,48 +44,48 @@ import org.apache.commons.io.FileUtils;//http://commons.apache.org/proper/common
  */
 public class Scorer
 {
-	private static final String OUTPUT_FILE = "C:/Users/Akul/Desktop/temp/output.txt";
-	private static final File TEMP_DIR = new File("C:/Users/Akul/Desktop/temp");
-	
-	
-	
-	/**
-	 * Outwards facing method for receiving data and converting file contents to Strings.
-	 * Works with score() method.
-	 * @param labName
-	 * @param files
-	 * @return Score
-	 */
-	public static Score scoreLab(String labName, List<File> files)
-	{ 	
-		// Scoring
-		Score score;
-		
-		// File Contents
-		String[] fileContents = new String[files.size()];
-		String[] fileNames = new String[files.size()];
-		
-		// Create arrays for use. File names and contents.
-		for (int i = 0; i < files.size(); i++)
-		{
-			fileNames[i] = files.get(i).getName();
-			fileContents[i] = fileToString(files.get(i));
-		}
-		
-		score = score(labName, fileContents, fileNames);
-		
-		return score;
-	}
-	
-	private static String fileToString(File in) 
-	{
-		FileInput input = new FileInput(in.getPath());
-		String temp = "";
-		while (input.hasMoreLines()) {
-			temp += input.readLine() + " ";
-		}
-		return temp;
-	}
+    private static final String OUTPUT_FILE = "C:/Users/Akul/Desktop/temp/output.txt";
+    private static final File TEMP_DIR = new File("C:/Users/Akul/Desktop/temp");
+    
+    
+    
+    /**
+     * Outwards facing method for receiving data and converting file contents to Strings.
+     * Works with score() method.
+     * @param labName
+     * @param files
+     * @return Score
+     */
+    public static Score scoreLab(String labName, List<File> files)
+    { 	
+    	// Scoring
+    	Score score;
+    	
+    	// File Contents
+    	String[] fileContents = new String[files.size()];
+    	String[] fileNames = new String[files.size()];
+    	
+    	// Create arrays for use. File names and contents.
+    	for (int i = 0; i < files.size(); i++)
+    	{
+    		fileNames[i] = files.get(i).getName();
+    		fileContents[i] = fileToString(files.get(i));
+    	}
+    	
+    	score = score(labName, fileContents, fileNames);
+    	
+    	return score;
+    }
+    
+    private static String fileToString(File in) 
+    {
+    	FileInput input = new FileInput(in.getPath());
+    	String temp = "";
+    	while (input.hasMoreLines()) {
+    		temp += input.readLine() + " ";//converts from a List<File> to a String
+    	}
+    	return temp;
+    }
 	
 	
     /**
@@ -102,6 +102,7 @@ public class Scorer
      */
     public static Score score(String labSpec, String[] labFiles, String[] labNames)
     {
+        //Declarations for values to be put into the Score class
         Object[] scoreData;
         Object[] labData;
         Boolean testCompile = false;
@@ -131,6 +132,7 @@ public class Scorer
         numDoc = numJavaDoc();
         numRet = numReturn();
         
+        //create Object[] arrays
         scoreData = new Object[] {score, testCompile, testExec};
         labData = new Object[] {numCom, numDoc, numAck, numRet};
         
@@ -150,24 +152,24 @@ public class Scorer
      */
     public static double calcScore(String specName, boolean testExec, boolean testComp)
     {
-        FileInput outputFile = new FileInput(OUTPUT_FILE);
-        FileInput countFile;
+        FileInput outputFile = new FileInput(OUTPUT_FILE);//File where console output is redirected to
+        FileInput countFile;//Counts the number of lines in the output file
         
-        double avgScore = 0.0;
-        int numLines = 0;
-        int totalOutputScore = 30;
+        double avgScore = 0.0;//Total student's score
+        int numLines = 0;//Number lines in the output file
+        int totalOutputScore = 30;//The maximum score for getting full credit in the run output
         
         if(testExec == true)
         {
-            avgScore+=10;
+            avgScore+=10;//if the program fully executed without exception add 10 points
         }
         if(testComp == true)
         {
-            avgScore+=10;
+            avgScore+=10;//if the program compiled correctly add 10 points
         }
         
-        Boolean[] checkOut;
-        String[] labSpec = getAllOut(specName);
+        Boolean[] checkOut;//True if the correct output was found and false if the output was not found
+        String[] labSpec = getAllOut(specName);//Holds every OUT value in a String[]
         
         // Count # of lines in output files
         try
@@ -189,36 +191,37 @@ public class Scorer
             System.out.println("Make sure to first compile and execute the program before calling this method!!");
         }
         
-        String[] labFile = new String[numLines];
-        checkOut = new Boolean[numLines];
+        String[] labFile = new String[numLines];//output.txt is copied into a String[] array
+        checkOut = new Boolean[numLines];//True if the correct output was found and false if the output was not found
         int x = 0;
+        
         while(outputFile.hasMoreLines())
         {
-            labFile[x] = outputFile.readLine().toLowerCase(); 
+            labFile[x] = outputFile.readLine().toLowerCase(); //output.txt is copied into a String[] array
             x++;
         }
         
-        for(int i = 0; i < labFile.length; i++)
+        for(int i = 0; i < labFile.length; i++)//loop for each line in the output.txt
         {
-            for(int j = 0; j < labSpec.length; j++)
+            for(int j = 0; j < labSpec.length; j++)//loop for each OUT value in the spec
             {
                 if(labSpec[j].equals(labFile[i]))
                 {
-                    checkOut[i] = true;
+                    checkOut[i] = true;//If the 1 line in output.txt was found in any of the spec lines then the output value is true
                 }
             }
             if(checkOut[i] == null)
-                checkOut[i] = false;
+                checkOut[i] = false;//if the output.txt value was not found in the spec then false
         }
         
         int checksCorrect = 0;
         for(int k = 0; k < checkOut.length; k++)
         {
             if(checkOut[k] == true)
-                checksCorrect++;   
+                checksCorrect++;//tallies up the total number of output values correct
         }
         
-        avgScore += ((((double)checksCorrect)/(checkOut.length))*totalOutputScore);
+        avgScore += ((((double)checksCorrect)/(checkOut.length))*totalOutputScore);//calculates fraction and multiples by total score
 
         return avgScore;
     }
@@ -237,9 +240,9 @@ public class Scorer
         File[] files = dir.listFiles(new FilenameFilter() 
         {
             @Override
-            public boolean accept(File dir, String name) 
+            public boolean accept(File dir, String name) //Scans the working(temp) directory
             {
-                return name.endsWith(".java");
+                return name.endsWith(".java");//Every file that ends with .java is returned
             }
         });
         
@@ -249,47 +252,50 @@ public class Scorer
     private static String getAfterOut(String line)
     {
         String output;        
-        int i = line.indexOf("OUT");
+        int i = line.indexOf("OUT");//search for the OUT in the String
         
-        output = line.substring(i + 4);
+        output = line.substring(i + 4);//Takes the line after the OUT String and reads until new line
         return output;
     } 
     
     /**
      * Finds the specific lab spec and scans it for all output to be cross referenced in Score
      * 
-     * @param String specName
+     * @param String specFileName
      * 
-     * @return output
+     * @return String[] output
      */
-    public static String[] getAllOut(String specName)
+    public static String[] getAllOut(String specFileName)
     {
     	// Get the filepath for the lab specs
-		SpecSubmissionServlet specSubmission = new SpecSubmissionServlet();
-		String labSpecFolder = specSubmission.getUploadDir().getPath(); 
-		File labSpecFile = new File(labSpecFolder + "/" + specName + ".txt");
+	SpecSubmissionServlet specSubmission = new SpecSubmissionServlet();
+	String labSpecFolderDirectory = specSubmission.getUploadDir().getPath(); 
+	File labSpecFile = new File(labSpecFolderDirectory + "/" + specFileName + ".txt");
     	
+	//Creates ArrayList to store out Strings on
         String indLine;
         ArrayList<String> outList = new ArrayList<String>();
         
+        //Set stream to deal with file input
         FileInput inFile= new FileInput(labSpecFile.getPath());
-        while(inFile.hasMoreLines())
+        while(inFile.hasMoreLines())//Traverse every line of the file
         {
             indLine = inFile.readLine();
             if(indLine.indexOf("OUT") >= 0)
             {
-                indLine = getAfterOut(indLine);
+                indLine = getAfterOut(indLine);//Call helper method to assist in adding the string to the arrayList - only triggered if OUT exists on said line
                 outList.add(indLine);
             }
         }
         
+        //Take the data out of the ArrayList and return to String[] array
         String[] output = new String[outList.size()];
         for(int i = 0; i < outList.size(); i++)
         {
             output[i] = outList.get(i);
         }
         
-        return output;
+        return output;//String[] array holding each string of OUT data
     }
     
     /**
@@ -302,7 +308,7 @@ public class Scorer
     {
        int commentNum = 0;
        File[] files;
-       files = scanDirectory();
+       files = scanDirectory();//Scans every .java file in the directory and stores the array
        
        for(int i = 0; i < files.length; i++)
        {
@@ -310,7 +316,7 @@ public class Scorer
            {
                String code = FileUtils.readFileToString(files[i]);
                
-               commentNum += StringUtils.countMatches(code, "//");
+               commentNum += StringUtils.countMatches(code, "//");//counts all occurances of the sequence "//" in a file
            }
            catch(Exception e)
            {
@@ -318,7 +324,7 @@ public class Scorer
            }
        }
        
-       return commentNum;
+       return commentNum;//total number of comments
     }
     
     /**
@@ -332,7 +338,7 @@ public class Scorer
         int breakNum = 0;
         
         File[] files;
-        files = scanDirectory();
+        files = scanDirectory();//Scans every .java file in the directory and stores the array
        
         for(int i = 0; i < files.length; i++)
         {
@@ -340,7 +346,7 @@ public class Scorer
            {
                String code = FileUtils.readFileToString(files[i]);
                
-               breakNum += StringUtils.countMatches(code, "break");
+               breakNum += StringUtils.countMatches(code, "break");//counts all occurances of the sequence "break" in a file 
            }
            catch(Exception e)
            {
@@ -348,7 +354,7 @@ public class Scorer
            }
         }
         
-        return breakNum;
+        return breakNum;//total number of break statements
     }
     
     /**
@@ -362,7 +368,7 @@ public class Scorer
         int javaDocNum = 0;
         
         File[] files;
-        files = scanDirectory();
+        files = scanDirectory();//Scans every .java file in the directory and stores the array
        
         for(int i = 0; i < files.length; i++)
         {
@@ -370,7 +376,7 @@ public class Scorer
            {
                String code = FileUtils.readFileToString(files[i]);
                
-               javaDocNum += StringUtils.countMatches(code, "/**");
+               javaDocNum += StringUtils.countMatches(code, "/**");//counts all occurances of the sequence "/**" in a file 
            }
            catch(Exception e)
            {
@@ -378,7 +384,7 @@ public class Scorer
            }
         }
         
-        return javaDocNum;
+        return javaDocNum;//total number of javaDoc sections
     }
     
     /**
@@ -389,10 +395,10 @@ public class Scorer
      */
     public static int numReturn()
     {
-        int instanceCheck = 0;
+        int numRet = 0;
         
         File[] files;
-        files = scanDirectory();
+        files = scanDirectory();//Scans every .java file in the directory and stores the array
        
         for(int i = 0; i < files.length; i++)
         {
@@ -400,7 +406,7 @@ public class Scorer
            {
                String code = FileUtils.readFileToString(files[i]);
                
-               instanceCheck += StringUtils.countMatches(code, "return");
+               numRet += StringUtils.countMatches(code, "return");//counts all occurances of the word "return" in a file 
            }
            catch(Exception e)
            {
@@ -408,6 +414,6 @@ public class Scorer
            }
         }
         
-        return instanceCheck;
+        return numRet;//total number of return statements
     }
 }
