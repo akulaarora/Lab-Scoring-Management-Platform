@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Pig
+comment0.text=\n\ Class\ Pig\ is\ for\ the\ pig\ animal\ and\ implements\ the\ Animal\ interface.\n\n\ @author\ Akul\ Arora\n\ @version\ 1.0\n
+comment1.params=type\ sound
+comment1.target=Pig(java.lang.String,\ java.lang.String)
+comment1.text=\n\ Default\ constructor\ for\ Pig\ class\n\ @param\ String\ type\ (of\ animal),\ String\ sound\ (sound\ made)\n
+comment2.params=
+comment2.target=java.lang.String\ getSound()
+comment2.text=\n\ Gets\ sound\ made\n\ @return\ String\ sound\n
+comment3.params=
+comment3.target=java.lang.String\ getType()
+comment3.text=\n\ Gets\ type\n\ @return\ String\ type\n
+numComments=4

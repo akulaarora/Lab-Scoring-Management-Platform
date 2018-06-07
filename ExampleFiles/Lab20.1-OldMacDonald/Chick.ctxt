@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Chick
+comment1.params=type\ sound
+comment1.target=Chick(java.lang.String,\ java.lang.String)
+comment1.text=\n\ Default\ constructor\ for\ Chick\ class\n\ @param\ String\ type\ (of\ animal),\ String\ sound\ (sound\ made)\n
+comment2.params=type\ sound\ sound2
+comment2.target=Chick(java.lang.String,\ java.lang.String,\ java.lang.String)
+comment2.text=\n\ Constructor\ for\ Chick\ class\ that\ takes\ two\ sounds.\n\ @param\ String\ type\ (of\ animal),\ String\ sound\ (sound\ made),\ String\ sound2\ (second\ sound\ made)\n
+comment3.params=
+comment3.target=java.lang.String\ getSound()
+comment3.text=\n\ Gets\ sound\ made.\ Will\ return\ the\ sound\ if\ only\ one\ was\ passed,\ or\n\ will\ randomly\ return\ one\ of\ the\ two\ sounds\ provided.\n\ @return\ String\ sound\n
+comment4.params=
+comment4.target=java.lang.String\ getType()
+comment4.text=\n\ Gets\ type\n\ @return\ String\ type\n
+numComments=5

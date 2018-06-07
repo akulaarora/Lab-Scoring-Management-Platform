@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Animal
+comment0.text=\n\ Animal\ is\ an\ interface\ for\ any\ animal.\n\n\ @author\ Akul\ Arora\n\ @version\ 1.0\n
+comment1.params=
+comment1.target=java.lang.String\ getSound()
+comment1.text=\n\ Gets\ the\ sound\ of\ an\ animal\n\ @return\ String\ sound\n
+comment2.params=
+comment2.target=java.lang.String\ getType()
+comment2.text=\n\ Gets\ the\ type\ of\ animal\n\ @return\ String\ type\n
+numComments=3

@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Farm
+comment0.text=\n\ Farm\ class\ is\ a\ class\ designed\ to\ simulate\ a\ farm.\n\n\ @author\ Akul\ Arora\n\ @version\ 1.0\n
+comment1.params=
+comment1.target=Farm()
+comment1.text=\n\ Default\ constructor\ for\ farm.\n\ Will\ create\ a\ NamedCow,\ Chick,\ and\ Pig.\n\ @return\ none\n
+comment2.params=
+comment2.target=void\ animalSounds()
+comment2.text=\n\ Prints\ all\ animals\ sounds\ and\ the\ cow's\ name.\n\ @return\ none\n\ @param\ none\n
+numComments=3

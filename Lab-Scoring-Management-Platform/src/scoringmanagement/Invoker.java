@@ -1,3 +1,5 @@
+package scoringmanagement;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -43,7 +45,7 @@ import java.util.Scanner;
 public class Invoker
 {
 	
-    private static final File DRIVER = new File("C:/Users/Akul/temp/Driver.java");
+    private static final File DRIVER = new File("/Users/Akul/Uploads/12345-1-lab20_1/Driver.java");
     private static final String OUTPUT_FILE = "C:/Users/Akul/Desktop/temp/output.txt";
     
     /**

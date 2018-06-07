@@ -97,7 +97,7 @@ public class ScoringDBInteract extends DBInteract
 	public void pushName(int ID, String name) throws SQLException
 	{
 		if(!checkIdExists(ID))
-			throw new IndexOutOfBoundsException();
+			throw new SQLException();
 		else
 		{
 			PreparedStatement pS = getConnection().prepareStatement("UPDATE "+getTable()+" SET name = ? WHERE ID = ? ");//pushes a name in accordance to the id

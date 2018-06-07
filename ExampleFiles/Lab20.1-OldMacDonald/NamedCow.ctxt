@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=NamedCow
+comment0.text=\n\ NamedCow\ is\ a\ cow\ animal\ that\ has\ a\ a\ name\ as\ well.\n\n\ @author\ Akul\ Arora\n\ @version\ 1.0\n
+comment1.params=type\ name\ sound
+comment1.target=NamedCow(java.lang.String,\ java.lang.String,\ java.lang.String)
+comment1.text=\n\ Default\ constructor\ for\ NamedCow\n\ @param\ String\ type\ (of\ animal),\ String\ name\ (name\ of\ animal),\ String\ sound\ (sound\ made)\n
+comment2.params=
+comment2.target=java.lang.String\ getName()
+comment2.text=\n\ Returns\ the\ name\ of\ the\ cow.\n\ @return\ String\ name\n
+numComments=3
