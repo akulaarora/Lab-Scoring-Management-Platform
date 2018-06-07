@@ -50,7 +50,7 @@ public class GenerateCSVServlet extends HttpServlet
 		
 		labs.add("Lab1");
 		request.setAttribute("labs", labs);
-		request.getRequestDispatcher("LabSubmission.jsp").forward(request, response);
+		request.getRequestDispatcher("GenerateCSV.jsp").forward(request, response);
 	}
 
 	/**
