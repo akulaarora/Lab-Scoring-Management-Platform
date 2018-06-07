@@ -108,7 +108,7 @@ public class ScoringDBInteract extends DBInteract
 	}
 	/**
 	 * Creates a pull object which represents all the data in a row
-	 * @param id the identification of the user 
+	 * @param ID the identification of the user 
 	 * @return row the DBPullObject in which the row is applicable
 	 */
 	public DBPullObject pull(int ID) throws SQLException
