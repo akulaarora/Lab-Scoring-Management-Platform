@@ -160,10 +160,11 @@ public class Invoker
      * @param String labName
      * @param String ID
      */
-    public static void runProgram(String labName, String ID, String classFileName)
+    public static boolean runProgram(String labName, String ID, String classFileName)
     {
         outputConsole(labName, ID);
    
+        boolean testExec = false;
         Class[] argTypes = new Class[1];
         argTypes[0] = String[].class;
        
@@ -175,7 +176,8 @@ public class Invoker
             argListForInvokedMain[0] = new String[0];
  
             mainMethod.invoke(null, argListForInvokedMain);
- 
+            
+            testExec = true;
             // This is the instance on which you invoke
             // the method; since main is static, you can pass
             // null in.
@@ -196,6 +198,8 @@ public class Invoker
         {
             System.err.println("main(String[]) in class "+ classFileName +" is not public");
         }
+        
+        return testExec;
     }
     
     /**
