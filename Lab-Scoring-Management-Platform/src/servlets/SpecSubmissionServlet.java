@@ -85,7 +85,7 @@ public class SpecSubmissionServlet extends SubmissionServlet
 			if (isWorking) // Will only run if so far has been working. Otherwise, will not continue.
 			{
 				dbInteract = new ScoringDBInteract();
-				dbInteract.createLab(specFile.getName());
+				dbInteract.createLab(getLabName(specFile.getName()));
 			}
 		}
 		catch (SQLException e)
@@ -98,6 +98,20 @@ public class SpecSubmissionServlet extends SubmissionServlet
 		if (isWorking)
 			out.write("Lab has been submitted!");
 	}
+    
+    // Gets labname from path
+    private String getLabName(String path)
+    {
+    	System.out.println(path);
+    	String output = "";
+    	
+    	output = path.substring(0, path.indexOf(".")); // Remove .txt extension
+    	// Get from last backslash to end
+    	while (output.indexOf("\\") != -1)
+    		output = output.substring(output.indexOf("\\")+1, output.length());
+
+    	return output;
+    }
     
     /**
 	 * @see SubmissionServlet#fileUpload(List, String)

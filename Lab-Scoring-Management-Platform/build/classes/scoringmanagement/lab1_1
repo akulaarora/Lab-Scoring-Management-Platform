@@ -1,0 +1,13 @@
+# Test 1. See if their code can do the bare minimum.
+TEST 1
+OUT Hello World
+IN 4
+IN 7
+OUT This is John's labSubmission
+IN 138
+OUT Hello World
+IN TestInput
+OUT 2
+DONE
+
+# ---:^)  ---:^)  ---:^)  ---:^)

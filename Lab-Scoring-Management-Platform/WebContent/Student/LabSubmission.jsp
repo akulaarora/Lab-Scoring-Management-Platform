@@ -47,7 +47,7 @@ Date: 5/21/2018
 			<%
 			}
 %>
-
+		<p> Please note that the java file containing main must be named "Driver.java" </p>
 		</select> <br /> Files to Submit: <input type="file" name="files"
 			multiple="multiple" required /> <br />
 
