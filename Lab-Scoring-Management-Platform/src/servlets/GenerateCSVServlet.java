@@ -4,7 +4,7 @@ import dbinteract.ScoringDBInteract; // For getting list of labs and generating 
 // For reading and sending files
 import java.io.FileInputStream;
 import java.io.OutputStream;
-
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ArrayList;
@@ -45,10 +45,22 @@ public class GenerateCSVServlet extends HttpServlet
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-    	
-		List<String> labs= new ArrayList<String>(2);
+    	ScoringDBInteract dbInteract; // For retrieving labs
+		List<String> labs = null; // labs sent
 		
-		labs.add("Lab1");
+		// Instantiate dbInteract and retrieve labs
+    	try 
+    	{
+			dbInteract = new ScoringDBInteract();
+			labs = dbInteract.getLabNames();
+		} 
+    	catch (SQLException e) 
+    	{
+			response.getWriter().append("Error communicating with database. Please try again later.");
+			e.printStackTrace();
+		}
+    	
+    	// Send to jsp webpage
 		request.setAttribute("labs", labs);
 		request.getRequestDispatcher("GenerateCSV.jsp").forward(request, response);
 	}

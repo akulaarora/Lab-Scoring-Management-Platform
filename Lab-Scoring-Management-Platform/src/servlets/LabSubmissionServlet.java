@@ -10,6 +10,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.*;
 
+import dbinteract.ScoringDBInteract;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 //import java.util.Enumeration;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -54,11 +57,24 @@ public class LabSubmissionServlet extends SubmissionServlet
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		List<String> labs= new ArrayList<String>(2);
+		ScoringDBInteract dbInteract; // For retrieving labs
+		List<String> labs = null; // labs sent
 		
-		labs.add("Lab1");
+		// Instantiate dbInteract and retrieve labs
+    	try 
+    	{
+			dbInteract = new ScoringDBInteract();
+			labs = dbInteract.getLabNames();
+		} 
+    	catch (SQLException e) 
+    	{
+			response.getWriter().append("Error communicating with database. Please try again later.");
+			e.printStackTrace();
+		}
+    	
+    	// Send to jsp webpage
 		request.setAttribute("labs", labs);
-		request.getRequestDispatcher("GenerateCSV.jsp").forward(request, response);
+		request.getRequestDispatcher("LabSubmission.jsp").forward(request, response);
 	}
 	
 	/**
