@@ -75,8 +75,10 @@ public abstract class DBInteract
 	 * @param filterType is the type of the filter
 	 * @param filter is the specific filter
 	 * @return a file object
-	 * @throws SQLException 
+	 * @throws SQLException
+	 * @deprecated use {@link #generateCSV(Map<String,String> filters)} instead
 	 */
+	@Deprecated
 	public File generateCSV(String filterType, String filter) throws SQLException
 	{
 		String sql = "Select * from "+getTable()+" where "+filterType+ " = "+filter;
