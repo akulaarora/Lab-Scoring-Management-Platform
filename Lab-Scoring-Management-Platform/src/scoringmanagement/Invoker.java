@@ -1,5 +1,4 @@
-//package scoringmanagement;
-//some servlet goes here?
+package scoringmanagement;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -63,7 +62,7 @@ public class Invoker
         boolean testCompile = false;
         StringBuilder labString = new StringBuilder(64);
         labString.append(labFile);//add the data into the string builder
-        labName = "C:/Users/Akul/Desktop/Lab-Scoring-Management-Platform/Lab-Scoring-Management-Platform/build/classes/scoringmanagement/" + labName + ".java";
+        labName = "C:/Users/Akul/Desktop/Lab-Scoring-Management-Platform/Lab-Scoring-Management-Platform/build/classes/scoringmanagement/" + labName;
         File Driver = new File(labName);
         if (Driver.getParentFile().exists() || Driver.getParentFile().mkdirs())
         {

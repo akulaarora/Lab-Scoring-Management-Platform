@@ -82,7 +82,7 @@ public class Scorer
     	FileInput input = new FileInput(in.getPath());
     	String temp = "";
     	while (input.hasMoreLines()) {
-    		temp += input.readLine() + " ";//converts from a List<File> to a String
+    		temp += input.readLine() + " \n";//converts File to a String
     	}
     	return temp;
     }
@@ -115,6 +115,8 @@ public class Scorer
         for(int i = 0; i < labFiles.length; i++)
         {
             Boolean compOutput;
+            System.out.println(labNames[i]);
+            System.out.println(labFiles[i]);
             compOutput = Invoker.compileLab(labNames[i], labFiles[i]);
             if(compOutput = true)
                 testCompile = true;
