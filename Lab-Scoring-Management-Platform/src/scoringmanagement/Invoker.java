@@ -38,7 +38,8 @@ import java.util.Scanner;
  * The Invoker class handles compilation, execution, and file output for submitted lab files
  * Full execution of the class allows for a java file to be compiled, executed, and for the console output to be logged in a log file
  *
- * @author Max & Darshan
+ * @author Max 
+ * @author Darshan
  * @version June 4
  */
 public class Invoker
@@ -50,15 +51,15 @@ public class Invoker
      * A directory is setup such as below that sandboxes each run within the user's unique directory.
      * Value returned determines if the program was able to compile the file(s) or not
      * 
-     * Compilation of the student's labs is done by the Java provided library --> https://docs.oracle.com/javase/7/docs/api/javax/tools/JavaCompiler.html
-     * Compilation section is forked from ---> https://github.com/0416354917/Algorithms/blob/master/src/util/InlineCompiler.java
+     * Compilation of the student's labs is done by the Java provided library  https://docs.oracle.com/javase/7/docs/api/javax/tools/JavaCompiler.html
+     * Compilation section is forked from  https://github.com/0416354917/Algorithms/blob/master/src/util/InlineCompiler.java
      * 
      * Sample Directory:
-     * Set Directory --> temp ---> .txt
-     *                        ---> .java
+     * Set Directory 
+     *                  
      *        
-     * @param String labName
-     * @param String labFile
+     * @param labName
+     * @param labFile
      */
     public static boolean compileLab(String labName, String labFile)
     {
@@ -149,8 +150,7 @@ public class Invoker
      * Modified from:
      * https://github.com/AlmasB/CodeSamplesJava/blob/master/src/demo/InvokerDemo.java
      * 
-     * @param String classFileName
-     * @param String labName
+     * @param classFileName
      */
     public static boolean runProgram(String classFileName)
     {
@@ -196,8 +196,6 @@ public class Invoker
     
     /**
      * Sets the Output Stream to be linked to a txt file instead of console
-     * 
-     * @param int trialNum - Sets the txt file name
      */
     public static void outputConsole()
     {

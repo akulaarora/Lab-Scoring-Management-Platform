@@ -52,7 +52,7 @@ public class ScoringDBInteract extends DBInteract
 			pushID(ID);
 		else
 		{
-			String sql = "UPDATE "+getTable()+" SET timestamp = ?, "+column+" = ? WHERE ID = ?";
+			String sql = "UPDATE "+getTable()+" SET timestamp = ?, "+column+" = ? WHERE ID = ?"; //updates the score in accordance to id
 			PreparedStatement pS = getConnection().prepareStatement(sql);
 			pS.setString(1, format.format(d1));
 			pS.setInt(2, pushData);
@@ -71,7 +71,7 @@ public class ScoringDBInteract extends DBInteract
 	public void pushID(int ID) throws SQLException
 	{
 
-		getStatement().executeUpdate("INSERT INTO "+getTable()+"(ID) VALUES("+ID+")");
+		getStatement().executeUpdate("INSERT INTO "+getTable()+"(ID) VALUES("+ID+")"); //generates a unique id thus insert instead of update
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class ScoringDBInteract extends DBInteract
 		if(!checkIdExists(ID))
 			throw new IndexOutOfBoundsException();
 		else
-			getStatement().executeUpdate("UPDATE "+getTable()+" SET Period = "+period+" WHERE ID = "+ID);
+			getStatement().executeUpdate("UPDATE "+getTable()+" SET Period = "+period+" WHERE ID = "+ID); //sets period in accordance to id
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class ScoringDBInteract extends DBInteract
 			throw new IndexOutOfBoundsException();
 		else
 		{
-			PreparedStatement pS = getConnection().prepareStatement("UPDATE "+getTable()+" SET name = ? WHERE ID = ? ");
+			PreparedStatement pS = getConnection().prepareStatement("UPDATE "+getTable()+" SET name = ? WHERE ID = ? ");//pushes a name in accordance to the id
 			pS.setString(1, name);
 			pS.setInt(2, ID);
 			pS.executeUpdate();
@@ -151,14 +151,14 @@ public class ScoringDBInteract extends DBInteract
 	public List<String> getLabNames() throws SQLException
 	{	
 		List<String> list = new ArrayList<>();
-		String sql = "select column_name from information_schema.columns where table_name=?";
+		String sql = "select column_name from information_schema.columns where table_name=?"; //gets an information schema query
 		
 		PreparedStatement pS = getConnection().prepareStatement(sql);
 		pS.setString(1, getTable());
 		ResultSet set = pS.executeQuery();
-		while(set.next())
+		while(set.next()) //goes through each column
 		{
-			if(set.getString(1).matches("[lL]ab.*"))
+			if(set.getString(1).matches("[lL]ab.*"))//takes a column that starts with lab
 				list.add(set.getString(1));
 		}
 		return list;
@@ -171,7 +171,7 @@ public class ScoringDBInteract extends DBInteract
 	 */
 	public void createLab(String columnName) throws SQLException
 	{
-		String sql = "ALTER TABLE "+getTable()+" ADD "+columnName+" TEXT";
+		String sql = "ALTER TABLE "+getTable()+" ADD "+columnName+" TEXT"; //creates a lab column
 		PreparedStatement pS = getConnection().prepareStatement(sql);
 		pS.executeUpdate();
 	}

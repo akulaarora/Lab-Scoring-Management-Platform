@@ -17,7 +17,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+/*
+ * Deprecated: All classes in here are broken and are not being used but if a need for this class
+ * arises the class will stay 
+ */
 
 public class LabSpecDBInteract extends DBInteract
 {
