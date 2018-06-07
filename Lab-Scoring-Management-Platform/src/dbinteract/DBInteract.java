@@ -31,7 +31,7 @@ public abstract class DBInteract
 	private String table = "";
 	private static final String ROOT_PATH = "/csv/";
 	private File path;
-	private static final String SQL_URL = "jdbc:mysql://localhost/lsmp";
+	private static final String SQL_URL = "jdbc:mysql://localhost/lsmp"; //initialises some important connection items
 	private static final String SQL_USER = "javacon";
 	private static final String SQL_PASS = "password";
 
@@ -47,8 +47,8 @@ public abstract class DBInteract
 		this.table = table;
 		try
 		{
-        	Class.forName("com.mysql.jdbc.Driver");
-            SQLcon = DriverManager.getConnection(SQL_URL, SQL_USER, SQL_PASS);
+        	Class.forName("com.mysql.jdbc.Driver"); //runs the jdbc driver
+            SQLcon = DriverManager.getConnection(SQL_URL, SQL_USER, SQL_PASS); //initializes the connection
 			myStatement = SQLcon.createStatement();
 		}
 		catch(SQLException e)
@@ -88,12 +88,12 @@ public abstract class DBInteract
 	@Deprecated
 	public File generateCSV(String filterType, String filter) throws SQLException
 	{
-		String sql = "Select * from "+getTable()+" where "+filterType+ " = "+filter;
+		String sql = "Select * from "+getTable()+" where "+filterType+ " = "+filter; //queries per filter
 		PreparedStatement pS = getConnection().prepareStatement(sql);
 		try {
-			CSVWriter writer = new CSVWriter(new FileWriter(path.getPath()));
-			writer.writeAll(pS.executeQuery(),true);
-			writer.close();
+			CSVWriter writer = new CSVWriter(new FileWriter(path.getPath())); //writes to a certain path
+			writer.writeAll(pS.executeQuery(),true);//executes query and writes to that path
+			writer.close(); //closes the connection
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -110,19 +110,19 @@ public abstract class DBInteract
 	 */
 	public File generateCSV(Map<String,String> filters) throws SQLException
 	{
-		String sql = "Select * from " + getTable();
+		String sql = "Select * from " + getTable(); //sql stub
 		int counter = 0;
 		for(String key : filters.keySet())
 		{
-			if (counter == 0)
+			if (counter == 0) //initial generates the starting parenthesis
 					sql += " where ( ";
 			
 			if(counter == filters.size()-1)
-				sql += key + " = " + '\'' +filters.get(key) + '\'' + ")";
+				sql += key + " = " + '\'' +filters.get(key) + '\'' + ")"; //generates the middle of the stub
 			
 			else
 			{
-				sql += key + " = " + '\'' + filters.get(key) + '\'' + " AND ";
+				sql += key + " = " + '\'' + filters.get(key) + '\'' + " AND "; //ends the stub and finalizes sql stub
 				counter++;
 			}
 		}
@@ -130,9 +130,9 @@ public abstract class DBInteract
 		PreparedStatement pS = getConnection().prepareStatement(sql);
 		try
 		{
-			CSVWriter writer = new CSVWriter(new FileWriter(path.getPath()));
-			writer.writeAll(pS.executeQuery(),true);
-			writer.close();
+			CSVWriter writer = new CSVWriter(new FileWriter(path.getPath())); //opens the writer
+			writer.writeAll(pS.executeQuery(),true);//executes query and writes to the csv
+			writer.close();//closes the connection
 		}
 		catch(IOException e)
 		{
@@ -149,13 +149,13 @@ public abstract class DBInteract
 	 */
 	public File generateCSV() throws SQLException
 	{
-		String sql = "Select * from "+getTable();
+		String sql = "Select * from "+getTable(); //generates a table with no filters
 		PreparedStatement pS = getConnection().prepareStatement(sql);
 		try
 		{
-			CSVWriter writer = new CSVWriter(new FileWriter(path.getPath()));
-			writer.writeAll(pS.executeQuery(),true);
-			writer.close();
+			CSVWriter writer = new CSVWriter(new FileWriter(path.getPath())); //opens writer
+			writer.writeAll(pS.executeQuery(),true); //writes the query
+			writer.close(); //closes the writer
 		}
 		catch(IOException e)
 		{
