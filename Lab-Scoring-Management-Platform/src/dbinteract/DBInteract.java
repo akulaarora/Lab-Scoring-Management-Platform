@@ -28,6 +28,9 @@ public abstract class DBInteract
 	private Statement myStatement;
 	private String table = "";
 	private File path;
+	private static final String SQL_URL = "jdbc:mysql://localhost/lsmp";
+	private static final String SQL_USER = "javacon";
+	private static final String SQL_PASS = "password";
 
 	/**
 	 * Initialises a connection with the lsmp database and works with the table
@@ -42,7 +45,7 @@ public abstract class DBInteract
 		try
 		{
         	Class.forName("com.mysql.jdbc.Driver");
-            SQLcon = DriverManager.getConnection("jdbc:mysql://localhost/lsmp", "javacon", "password");
+            SQLcon = DriverManager.getConnection(SQL_URL, SQL_USER, SQL_PASS);
 			myStatement = SQLcon.createStatement();
 		}
 		catch(SQLException e)
