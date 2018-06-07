@@ -10,6 +10,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.io.File;
@@ -46,12 +47,26 @@ public class LabSubmissionServlet extends SubmissionServlet
     	// Object created by form action call. Nothing to be done here. 
         // TODO Auto-generated constructor stub
     }
+    
+    /**
+	 * Serves LabSubmission webpage with correct labs to choose from.
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		List<String> labs= new ArrayList<String>(2);
+		
+		labs.add("Lab1");
+		request.setAttribute("labs", labs);
+		request.getRequestDispatcher("LabSubmission.jsp").forward(request, response);
+	}
 	
 	/**
 	 * Receives user input of lab submission information.
 	 * Outputs scores of student back to web page.
 	 * Also, stores to MySQL database and files submitted to file system. Files are stored to upload directory/foldername.
 	 * Folder name is "<id>-<period>-<lab>" 
+	List<String> options = new ArrayList<String>(2);
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
     @Override
