@@ -1,26 +1,40 @@
-package dbinteract;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * Handles interaction with lab specification database.
  * Obsolete as lab spec interactions are now completely handled in files.
+ * Please Do not use this as no table is currently being setup use others instead
  * @Deprecated
  * @author Manseej Khatri
  * @version 06/01/2018
  *
  */
 
+
+
+package dbinteract;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+
+
 public class LabSpecDBInteract extends DBInteract
 {
-
+	/**
+	 * Initiates an interaction with the lsmp database under the table:SpecDB
+	 * @throws SQLException
+	 */
 	public LabSpecDBInteract() throws SQLException 
 	{
 		super("SpecDB");
 	}
 	
+	/**
+	 * Takes a lab value ie lab 1.0 and pushes it onto the table
+	 * @param lab the name of the lab
+	 * @throws SQLException
+	 */
 	public void pushLab(String lab) throws SQLException
 	{
 		PreparedStatement pS = getConnection().prepareStatement("INSERT INTO "+getTable()+"(lab) VALUES(?)");
@@ -28,6 +42,12 @@ public class LabSpecDBInteract extends DBInteract
 		pS.executeUpdate();
 	}
 	
+	/**
+	 * pushes a spec string onto the database.
+	 * @param spec the requirements of each lab
+	 * @param lab the lab name
+	 * @throws SQLException
+	 */
 	public void pushSpec(String spec, String lab) throws SQLException
 	{
 		String sql = "UPDATE "+getTable()+" SET spec = ? WHERE lab = ?";
@@ -37,6 +57,12 @@ public class LabSpecDBInteract extends DBInteract
 		pS.executeUpdate();
 	}
 
+	/**
+	 * Pulls a lab taken from a guaranteed identifier per corresponding lab
+	 * @param identifier the identifier
+	 * @return a DBPullObject for pulling information
+	 * @throws SQLException 
+	 */
 	public DBPullObject pull(int identifier) throws SQLException 
 	{
 		DBPullObject returnObj = null;
@@ -58,7 +84,12 @@ public class LabSpecDBInteract extends DBInteract
 	}
 	
 	
-	
+	/**
+	 * Takes the name of the lab to find the associated identifier
+	 * @param labName the name of the lab
+	 * @return the associated identifier
+	 * @throws SQLException
+	 */
 	public int getAssociatedIdentifier(String labName) throws SQLException
 	{
 		String sql = "SELECT identifier FROM SpecDB where lab = ?";

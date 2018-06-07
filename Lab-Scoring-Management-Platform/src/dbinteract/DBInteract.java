@@ -2,7 +2,9 @@
 /**
  * The abstract class for database interaction with the lsmp database
  * Guarantees a connection and a return of row information
- *
+ * Also guarantees a CSV file being sent with applicable filters or just a
+ * CSV to be generated
+ * The file will most likely be downloadable as a csv file
  * @author Manseej Khatri
  * @version 1.0
  */
@@ -27,7 +29,7 @@ public abstract class DBInteract
 	private Connection SQLcon = null;
 	private Statement myStatement;
 	private String table = "";
-	private static final String ROOT_PATH = "C:/Users/Akul/Desktop/csv/";
+	private static final String ROOT_PATH = "/csv/";
 	private File path;
 	private static final String SQL_URL = "jdbc:mysql://localhost/lsmp";
 	private static final String SQL_USER = "javacon";

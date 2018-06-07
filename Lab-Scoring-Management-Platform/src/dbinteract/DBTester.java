@@ -2,6 +2,8 @@ package dbinteract;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import dbinteract.DBPullObject;
 import dbinteract.LabSpecDBInteract;
@@ -26,6 +28,7 @@ public class DBTester
 			*/
 			//interaction.createLab("lab2_0");
 			//interaction.pushID(1888888);
+			/*
 			interaction.pushScore(45, 1888888, "lab2_0");
 			interaction.pushScore(45, 1999999, "lab2_0");
 			
@@ -42,7 +45,7 @@ public class DBTester
 			{
 				System.out.println(obj.getLabScores().get(i));
 			}
-			
+			*/
 			/*
 			LabSpecDBInteract interaction2 = new LabSpecDBInteract();
 			
@@ -52,6 +55,14 @@ public class DBTester
 			System.out.println(obj.getLab());
 			System.out.println(obj.getSpec());
 			*/
+			Map <String,String> hm = new HashMap<>();
+			hm.put("id","1888888");
+			hm.put("period", "2");
+			interaction.generateCSV(hm);
+			for(String s : interaction.getLabNames())
+			{
+				System.out.println(s);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
