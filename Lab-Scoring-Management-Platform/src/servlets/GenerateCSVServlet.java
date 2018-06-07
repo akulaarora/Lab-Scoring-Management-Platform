@@ -1,6 +1,6 @@
 package servlets;
 
-import scoringmanagement.*; // For csvs // TODO Use specific classes
+import dbinteract.ScoringDBInteract; // For getting list of labs and generating CSVs
 // For reading and sending files
 import java.io.FileInputStream;
 import java.io.OutputStream;
@@ -35,7 +35,6 @@ public class GenerateCSVServlet extends HttpServlet
     public GenerateCSVServlet()
     {
     	// Object created by form action call. Nothing to be done here. 
-        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -46,6 +45,7 @@ public class GenerateCSVServlet extends HttpServlet
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+    	
 		List<String> labs= new ArrayList<String>(2);
 		
 		labs.add("Lab1");
