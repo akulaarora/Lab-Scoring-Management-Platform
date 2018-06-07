@@ -43,6 +43,8 @@ import java.util.Scanner;
  */
 public class Invoker
 {
+	
+	private static final File DRIVER = new File("C:/Users/Akul/temp/Driver.java");
     /**
      * The compileLab method takes in lab submission data (LabName, and LabFiles)
      * A directory is setup such as below that sandboxes each run within the user's unique directory.
@@ -65,15 +67,14 @@ public class Invoker
         labString.append(labFile);
        
         //CHANGE TO SERVER DIRECTORY using labName
-        File helloWorldJava = new File("C:/Users/^Water_Bear/Desktop/temp/HelloWorld.java");
-        if (helloWorldJava.getParentFile().exists() || helloWorldJava.getParentFile().mkdirs())
+        if (DRIVER.getParentFile().exists() || DRIVER.getParentFile().mkdirs())
         {
             try
             {
                 Writer writer = null;
                 try
                 {
-                    writer = new FileWriter(helloWorldJava);
+                    writer = new FileWriter(DRIVER);
                     writer.write(labString.toString());
                     writer.flush();
                 } 

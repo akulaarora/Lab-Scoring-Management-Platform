@@ -44,9 +44,18 @@ import org.apache.commons.io.FileUtils;//http://commons.apache.org/proper/common
  */
 public class Scorer
 {
-	private static final String OUTPUT_FILE = "C:/Users/^Water_Bear/Desktop/temp/output.txt";
+	private static final String OUTPUT_FILE = "C:/Users/Akul/Desktop/temp/output.txt";
+	private static final File TEMP_DIR = new File("C:/Users/Akul/Desktop/temp");
 	
 	
+	
+	/**
+	 * Outwards facing method for receiving data and converting file contents to Strings.
+	 * Works with score() method.
+	 * @param labName
+	 * @param files
+	 * @return Score
+	 */
 	public static Score scoreLab(String labName, List<File> files)
 	{ 	
 		// Scoring
@@ -56,11 +65,6 @@ public class Scorer
 		String[] fileContents = new String[files.size()];
 		String[] fileNames = new String[files.size()];
 		
-		// Get the filepath for the lab specs
-		SpecSubmissionServlet specSubmission = new SpecSubmissionServlet();
-		String labSpecFolder = specSubmission.getUploadDir().getPath(); 
-		File labSpecFile = new File(labSpecFolder + "/" + labName + ".txt");
-		
 		// Create arrays for use. File names and contents.
 		for (int i = 0; i < files.size(); i++)
 		{
@@ -68,7 +72,7 @@ public class Scorer
 			fileContents[i] = fileToString(files.get(i));
 		}
 		
-		score = score(fileToString(labSpecFile), fileContents, fileNames);
+		score = score(labName, fileContents, fileNames);
 		
 		return score;
 	}
@@ -82,8 +86,10 @@ public class Scorer
 		}
 		return temp;
 	}
+	
+	
     /**
-     * Acts as the main method and is the only outward facing method of class.
+     * Acts as the main method for scoring.
      * scoreStudent calls all other methods within the class.
      * Compilation of the student's labs is done by the Java provided library --> https://docs.oracle.com/javase/7/docs/api/javax/tools/JavaCompiler.html
      * Compilation section is forked from ---> https://github.com/0416354917/Algorithms/blob/master/src/util/InlineCompiler.java
@@ -161,11 +167,12 @@ public class Scorer
         }
         
         Boolean[] checkOut;
-        String[] labSpec = {"cow went moo", "chick goes bock", "107"};//getAllOut(String specName)
+        String[] labSpec = getAllOut(specName);
         
+        // Count # of lines in output files
         try
         {
-            countFile = new FileInput("C:/Users/^Water_Bear/Desktop/1849935/lab30_1/output.txt");
+            countFile = new FileInput(OUTPUT_FILE);
 
             while(countFile.hasMoreLines())
             {    
@@ -226,7 +233,7 @@ public class Scorer
      */
     public static File[] scanDirectory()
     {
-        File dir = new File("C:/Users/^Water_Bear/Desktop/temp");//CHANGE TO SERVER DIRECTORY
+        File dir = TEMP_DIR; // TODO Change to server directory
         File[] files = dir.listFiles(new FilenameFilter() 
         {
             @Override
@@ -239,7 +246,7 @@ public class Scorer
         return files;
     }
     
-    private String getAfterOut(String line)
+    private static String getAfterOut(String line)
     {
         String output;        
         int i = line.indexOf("OUT");
@@ -255,13 +262,17 @@ public class Scorer
      * 
      * @return output
      */
-    public String[] getAllOut(String specName)
+    public static String[] getAllOut(String specName)
     {
-        String specDirectory = "/Users/darshanparekh/Documents/test/" + specName + ".txt";//change to server directory
+    	// Get the filepath for the lab specs
+		SpecSubmissionServlet specSubmission = new SpecSubmissionServlet();
+		String labSpecFolder = specSubmission.getUploadDir().getPath(); 
+		File labSpecFile = new File(labSpecFolder + "/" + specName + ".txt");
+    	
         String indLine;
         ArrayList<String> outList = new ArrayList<String>();
         
-        FileInput inFile= new FileInput(specDirectory);
+        FileInput inFile= new FileInput(labSpecFile.getPath());
         while(inFile.hasMoreLines())
         {
             indLine = inFile.readLine();
