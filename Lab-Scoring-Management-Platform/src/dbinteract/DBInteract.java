@@ -27,6 +27,7 @@ public abstract class DBInteract
 	private Connection SQLcon = null;
 	private Statement myStatement;
 	private String table = "";
+	private static final String ROOT_PATH = "C:/Users/Akul/Desktop/csv/";
 	private File path;
 	private static final String SQL_URL = "jdbc:mysql://localhost/lsmp";
 	private static final String SQL_USER = "javacon";
@@ -55,7 +56,8 @@ public abstract class DBInteract
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		path = new File("/csv/"+getTable()+".csv");
+		new File(ROOT_PATH).mkdirs(); // Creates folders to create csv file in
+		path = new File(ROOT_PATH +getTable()+".csv");
 	}
 	
 	/**
@@ -106,21 +108,23 @@ public abstract class DBInteract
 	 */
 	public File generateCSV(Map<String,String> filters) throws SQLException
 	{
-		String sql = "Select * from " + getTable() + " where ( ";
+		String sql = "Select * from " + getTable();
 		int counter = 0;
 		for(String key : filters.keySet())
 		{
+			if (counter == 0)
+					sql += " where ( ";
+			
 			if(counter == filters.size()-1)
-			{
-				sql+=key+" = "+filters.get(key);
-			}
+				sql += key + " = " + '\'' +filters.get(key) + '\'' + ")";
+			
 			else
 			{
-				sql+=key + " = " + filters.get(key)+" AND ";
+				sql += key + " = " + '\'' + filters.get(key) + '\'' + " AND ";
 				counter++;
 			}
 		}
-		sql+=")";
+		
 		PreparedStatement pS = getConnection().prepareStatement(sql);
 		try
 		{
@@ -132,7 +136,7 @@ public abstract class DBInteract
 		{
 			e.printStackTrace();
 		}
-		return null;
+		return path;
 	}
 	
 	/**

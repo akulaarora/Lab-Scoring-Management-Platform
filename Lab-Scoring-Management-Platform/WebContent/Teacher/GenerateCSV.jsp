@@ -11,21 +11,6 @@
 	
 	<form action="GenerateCSVServlet" method="post">
 		<p>Leave blank what you would not like to filter by.</p>
-		<select name="lab">
-			<!-- TODO: This needs to be replaced with list of labs from servlet. -->
-			<option></option>
-		<!-- Dynamically receives list of labs to be offered as options -->
-<%
-			java.util.List<String> labs = (java.util.List)request.getAttribute("labs"); // Gets labs passed from servlet
-			for (String lab : labs) // Offers them as options
-			{
-%>
-				<option value="<%=lab%>"><%=lab %></option>
-<%
-			}
-%>
-		</select>
-		<br />
 		
 		<input type="text" name="name" placeholder="type student name" />
 		<br />

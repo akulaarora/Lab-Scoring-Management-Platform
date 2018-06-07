@@ -81,7 +81,7 @@ public class GenerateCSVServlet extends HttpServlet
 		
 		// For sending file to teacher
 		FileInputStream fileInputStream = null;
-		OutputStream responseOutputStream = response.getOutputStream();
+		OutputStream responseOutputStream;
 		File csvFile = null; // Filename
 		
 		// Method use
@@ -93,7 +93,11 @@ public class GenerateCSVServlet extends HttpServlet
 		temp = request.getParameterMap();
 		for (String filter : temp.keySet()) // Converts to <String, String>. Only one value.
 		{
-			filters.put(filter, temp.get("filter")[0]);
+
+			if (temp.get(filter) != null && temp.get(filter)[0] != "") // Ensures teacher entered value that is being filtered
+			{
+				filters.put(filter, temp.get(filter)[0]);
+			}
 		}
 		
 		try
@@ -113,16 +117,18 @@ public class GenerateCSVServlet extends HttpServlet
 		{
 			// Modify response's attributes
 			response.setContentType("text/plain");
-			response.setHeader("Content-disposition", "attachment; filename="+ csvFile.getName());
+			response.setHeader("Content-disposition", "attachment; filename=" + csvFile.getName());
 		
 			// Send CSV file to teacher
+			responseOutputStream = response.getOutputStream();
 			fileInputStream = new FileInputStream(csvFile);
 			while ((bytes = fileInputStream.read()) != -1) 
 				responseOutputStream.write(bytes);
 			
 			fileInputStream.close();
+			responseOutputStream.close();
 		}
-		responseOutputStream.close();
+		
 
 	}
 }

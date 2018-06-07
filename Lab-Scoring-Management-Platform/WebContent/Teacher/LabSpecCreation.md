@@ -3,7 +3,7 @@
 The following document contains information on how to create your own lab specifications for grading your students!
 
 ## Submitting Lab Specifications
-Lab specifications are in the format of a text file with the file extension ".txt" that is submitted from the Teacher's homepage. Please keep in mind that only text files ending in ".txt" will work.
+Lab specifications are in the format of a text file with the file extension ".txt" that is submitted from the Teacher's homepage. Please keep in mind that only text files ending in ".txt" and beginning with "lab" will work.
 
 ## Formatting Lab Specifications
 

@@ -49,9 +49,7 @@ public class ScoringDBInteract extends DBInteract
 		Date d1 = new Date();
 		DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); //for the timestamp
 		if(!checkIdExists(ID))
-		{
-			throw new IndexOutOfBoundsException();
-		}
+			pushID(ID);
 		else
 		{
 			String sql = "UPDATE "+getTable()+" SET timestamp = ?, "+column+" = ? WHERE ID = ?";
@@ -160,7 +158,7 @@ public class ScoringDBInteract extends DBInteract
 		ResultSet set = pS.executeQuery();
 		while(set.next())
 		{
-			if(set.getString(1).matches("lab.*"))
+			if(set.getString(1).matches("[lL]ab.*"))
 				list.add(set.getString(1));
 		}
 		return list;
