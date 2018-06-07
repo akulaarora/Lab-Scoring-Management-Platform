@@ -1,0 +1,12 @@
+TEST 1
+OUT cow goes moo
+OUT chick goes cluck
+OUT pig goes oink
+DONE
+
+TEST 2
+OUT cow goes moo
+OUT chick goes cheep
+OUT pig goes oink
+OUT The cow is known as Elsie
+DONE

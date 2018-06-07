@@ -105,7 +105,7 @@ public class SpecSubmissionServlet extends SubmissionServlet
     	System.out.println(path);
     	String output = "";
     	
-    	output = path.substring(0, path.indexOf(".")); // Remove .txt extension
+    	output = path.substring(0, path.indexOf(".txt")); // Remove .txt extension
     	// Get from last backslash to end
     	while (output.indexOf("\\") != -1)
     		output = output.substring(output.indexOf("\\")+1, output.length());
