@@ -1,9 +1,12 @@
-package scoringmanagement;
+package dbinteract;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import dbinteract.DBPullObject;
+import dbinteract.LabSpecDBInteract;
  
-class test 
+public class DBTester 
 {
 	public static void main(String[] args)
 	{

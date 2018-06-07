@@ -14,7 +14,7 @@
  */
 
 
-package scoringmanagement;
+package dbinteract;
 
 import java.sql.*;
 import java.text.DateFormat;

@@ -8,7 +8,7 @@
  */
 
 
-package scoringmanagement;
+package dbinteract;
 
 import java.util.ArrayList;
 public class DBPullObject 
