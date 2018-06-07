@@ -7,10 +7,10 @@ import java.util.*;
 * 
 * Example format:
 * studentScores array                 labData array
-* ------------------------            --------------------------------------------------------
-* 20.0  | False   | True |            | 56     | 4      | 5       | 2    | True              |
-* ------------------------            --------------------------------------------------------
-* Score--Compiled?-Runs?             #comments-#methods-#JavaDocs-#Break-GlobalInstanceVars?       
+* ------------------------            ----------------------------------
+* 20.0  | False   | True |            | 56     | 4      | 5       | 2   | 
+* ------------------------            ----------------------------------
+* Score--Compiled?-Runs?             #comments-#methods-#JavaDocs-#Break       
 * 
 *
 * @author Darshan & Max
@@ -30,7 +30,7 @@ public class Score
       
     
       Object[] labData = new Object[]{
-      0, 0, 0, 0, false};//defines general data
+      0, 0, 0, 0};//defines general data
    }
    
    /**
@@ -193,20 +193,6 @@ public class Score
        Integer scoreList;
        
        scoreList = (Integer)labData[3];
-
-       return scoreList;
-   }
-   
-   /**
-    * Checks to see if public global variables exist
-    * 
-    * @return Integer scoreList
-    */
-   public Boolean getGlobalVarCheck()
-   {
-       Boolean scoreList;
-       
-       scoreList = (Boolean)studentScores[4];
 
        return scoreList;
    }
