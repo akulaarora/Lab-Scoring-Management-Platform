@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <!-- 
 This is the web page where the student enters the information to submit a lab.
@@ -37,11 +39,19 @@ Date: 5/21/2018
 			<option value="5">Period 5</option>
 		</select>
 		<br />
-		
-		<select name="lab" required > <!-- TODO: This needs to be replaced with list of labs from servlet. -->
-			<option value="Lab1">Lab1</option>
-			<option value="Lab2">Lab2</option>
-			<option value="Lab3">Lab3</option>
+
+		<select name="lab" required>
+		<!-- Dynamically receives list of labs to be offered as options -->
+<%
+			java.util.List<String> labs = (java.util.List)request.getAttribute("labs"); // Gets labs passed from servlet
+			for (String lab : labs) // Offers them as options
+			{
+%>
+				<option value="<%=lab%>"><%=lab %></option>
+<%
+			}
+%>
+			
 		</select>
 		<br />
 		
