@@ -1,5 +1,3 @@
-package scoringmanagement;
-
 import java.util.*;
 
 /**
@@ -10,9 +8,9 @@ import java.util.*;
 * Example format:
 * studentScores array                 labData array
 * ------------------------            ----------------------------------
-* 20.0  | False   | True |            | 56     | 4      | 5       | 2   | 
+* 20.0  | False   | True |            | 56    | 5       | 2   | 5      |
 * ------------------------            ----------------------------------
-* Score--Compiled?-Runs?             #comments-#methods-#JavaDocs-#Break       
+* Score--Compiled?-Runs?             #comments-#JavaDocs-#Break-#return       
 * 
 *
 * @author Darshan & Max
@@ -157,20 +155,6 @@ public class Score
        return scoreList;
    }
    
-    /**
-    * returns the total number of methods in all the programs combined.
-    * 
-    * @return Integer scoreList
-    */
-   public Integer getDefinedMethods()
-   {
-       Integer scoreList;
-       
-       scoreList = (Integer)labData[1];
-
-       return scoreList;
-   }
-   
    /**
     * returns the total number of JavaDocs in all the programs combined.
     * 
@@ -180,7 +164,7 @@ public class Score
    {
        Integer scoreList;
        
-       scoreList = (Integer)labData[2];
+       scoreList = (Integer)labData[1];
 
        return scoreList;
    }
@@ -191,6 +175,20 @@ public class Score
     * @return Integer scoreList
     */
    public Integer getAckNum()
+   {
+       Integer scoreList;
+       
+       scoreList = (Integer)labData[2];
+
+       return scoreList;
+   }
+   
+   /**
+    * returns the total number of return statements in all the programs combined.
+    * 
+    * @return Integer scoreList
+    */
+   public Integer getRetNum()
    {
        Integer scoreList;
        
