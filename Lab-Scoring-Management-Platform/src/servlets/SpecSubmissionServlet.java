@@ -42,7 +42,6 @@ public class SpecSubmissionServlet extends SubmissionServlet
     public SpecSubmissionServlet() 
     {
     	// Object created by form action call. Nothing to be done here. 
-        // TODO Auto-generated constructor stub
     }
     
     

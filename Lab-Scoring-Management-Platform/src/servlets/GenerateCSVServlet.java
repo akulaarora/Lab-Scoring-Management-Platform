@@ -46,12 +46,11 @@ public class GenerateCSVServlet extends HttpServlet
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		response.getWriter().append("Using a GET call for submitting certain data poses risks."
-				+ "Please use the POST method provided.");
-		/*
-		 * Default
-		 * response.getWriter().append("Served at: ").append(request.getContextPath());
-		 */
+		List<String> labs= new ArrayList<String>(2);
+		
+		labs.add("Lab1");
+		request.setAttribute("labs", labs);
+		request.getRequestDispatcher("LabSubmission.jsp").forward(request, response);
 	}
 
 	/**

@@ -49,7 +49,7 @@ public class LabSubmissionServlet extends SubmissionServlet
     }
     
     /**
-	 * Serves LabSubmission webpage with correct labs to choose from.
+	 * Serves GenerateCSV webpage with correct labs to choose from.
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -58,7 +58,7 @@ public class LabSubmissionServlet extends SubmissionServlet
 		
 		labs.add("Lab1");
 		request.setAttribute("labs", labs);
-		request.getRequestDispatcher("LabSubmission.jsp").forward(request, response);
+		request.getRequestDispatcher("GenerateCSV.jsp").forward(request, response);
 	}
 	
 	/**
