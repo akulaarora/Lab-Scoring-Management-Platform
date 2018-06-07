@@ -4,6 +4,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Handles interaction with lab specification database.
+ * Obsolete as lab spec interactions are now completely handled in files.
+ * @Deprecated
+ * @author Manseej Khatri
+ * @version 06/01/2018
+ *
+ */
+
 public class LabSpecDBInteract extends DBInteract
 {
 
