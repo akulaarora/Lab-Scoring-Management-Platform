@@ -8,7 +8,7 @@
  */
 
 
-package scoringmanagement;
+package dbinteract;
 
 import java.io.File;
 import java.io.FileWriter;
