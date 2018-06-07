@@ -1,5 +1,3 @@
-package scoringmanagement;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -45,27 +43,25 @@ import java.util.Scanner;
 public class Invoker
 {
 	
-	private static final File DRIVER = new File("C:/Users/Akul/temp/Driver.java");
+    private static final File DRIVER = new File("C:/Users/Akul/temp/Driver.java");
+    private static final String OUTPUT_FILE = "C:/Users/Akul/Desktop/temp/output.txt";
+    
     /**
-     * The compileLab method takes in lab submission data (LabName, and LabFiles)
-     * A directory is setup such as below that sandboxes each run within the user's unique directory.
-     * Value returned determines if the program was able to compile the file(s) or not
+     * The compileLab method takes in lab submission data (LabName, and LabData)
+     * A temp directory is setup that holds (.class, .java, and .txt files)
+     * Allows files to be compiled, executed, and redirect output to a txt file
      * 
      * Compilation of the student's labs is done by the Java provided library  https://docs.oracle.com/javase/7/docs/api/javax/tools/JavaCompiler.html
-     * Compilation section is forked from  https://github.com/0416354917/Algorithms/blob/master/src/util/InlineCompiler.java
-     * 
-     * Sample Directory:
-     * Set Directory 
-     *                  
+     * Compilation section is forked from  https://github.com/0416354917/Algorithms/blob/master/src/util/InlineCompiler.java                
      *        
      * @param labName
-     * @param labFile
+     * @param labData
      */
-    public static boolean compileLab(String labName, String labFile)
+    public static boolean compileLab(String labName, String labData)
     {
         boolean testCompile = false;
         StringBuilder labString = new StringBuilder(64);
-        labString.append(labFile);
+        labString.append(labData);//add the data into the string builder
        
         //CHANGE TO SERVER DIRECTORY using labName
         if (DRIVER.getParentFile().exists() || DRIVER.getParentFile().mkdirs())
@@ -76,7 +72,7 @@ public class Invoker
                 try
                 {
                     writer = new FileWriter(DRIVER);
-                    writer.write(labString.toString());
+                    writer.write(labString.toString());//Writes the labString to the writer
                     writer.flush();
                 } 
                 finally 
@@ -102,7 +98,7 @@ public class Invoker
                 optionList.add(System.getProperty("java.class.path") + ";dist/InlineCompiler1.jar");
 
                 Iterable<? extends JavaFileObject> compilationUnit
-                        = fileManager.getJavaFileObjectsFromFiles(Arrays.asList(helloWorldJava));
+                        = fileManager.getJavaFileObjectsFromFiles(Arrays.asList(DRIVER));//helloWorldJava
                 JavaCompiler.CompilationTask task = compiler.getTask(
                     null, 
                     fileManager, 
@@ -119,7 +115,7 @@ public class Invoker
                     @SuppressWarnings("resource")
                     URLClassLoader classLoader = new URLClassLoader(new URL[]{new File("./").toURI().toURL()});
                     // Load the class from the classloader by name....
-                    Class<?> loadedClass = classLoader.loadClass("C:/Users/^Water_Bear/Desktop/compiletest/HelloWorld");
+                    Class<?> loadedClass = classLoader.loadClass("DRIVER");//"C:/Users/^Water_Bear/Desktop/compiletest/HelloWorld"
                     // Create a new instance...
                     Object obj = loadedClass.newInstance();
                     /************************************************************************************************* Load and execute **/
@@ -128,16 +124,16 @@ public class Invoker
                 {
                     for (Diagnostic<? extends JavaFileObject> diagnostic : diagnostics.getDiagnostics()) 
                     {
-                        System.out.format("Error on line %d in %s%n",
+                        System.out.format("Error on line %d in %s%n",//if the program could not be loaded into a class
                             diagnostic.getLineNumber(),
                             diagnostic.getSource().toUri());
                     }
                 }
-                fileManager.close();
+                fileManager.close();//close the stream
             } 
             catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException exp) 
             {
-                exp.printStackTrace();
+                exp.printStackTrace();//deal with multiple exceptions
             }
         }
         
@@ -154,11 +150,11 @@ public class Invoker
      */
     public static boolean runProgram(String classFileName)
     {
-        outputConsole();
+        outputConsole();//Redirect from console stream to txt
    
         boolean testExec = false;
         Class[] argTypes = new Class[1];
-        argTypes[0] = String[].class;
+        argTypes[0] = String[].class;//Enter the classFileName into the array
        
         try
         {
@@ -176,19 +172,19 @@ public class Invoker
         }  
         catch (ClassNotFoundException ex)
         {
-            System.err.println("Class "+ classFileName +" not found in classpath.");
+            System.err.println("Class "+ classFileName +" not found in classpath.");//File not found
         }
         catch (NoSuchMethodException ex)
         {
-            System.err.println("Class "+ classFileName +" does not define public static void main(String[])");
+            System.err.println("Class "+ classFileName +" does not define public static void main(String[])");//no main
         }
         catch (InvocationTargetException ex)
         {
-            System.err.println("Exception while executing "+ classFileName +":"+ex.getTargetException());
+            System.err.println("Exception while executing "+ classFileName +":"+ex.getTargetException());//cant run
         }
         catch (IllegalAccessException ex)
         {
-            System.err.println("main(String[]) in class "+ classFileName +" is not public");
+            System.err.println("main(String[]) in class "+ classFileName +" is not public");//main not public
         }
         
         return testExec;
@@ -201,7 +197,7 @@ public class Invoker
     {
         try
         {//set to environment variables using labname
-            System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream("C:/Users/^Water_Bear/Desktop/temp/output.txt")), true));
+            System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(OUTPUT_FILE)), true));//set the directory for the output.txt
         }
         catch(Exception e)
         {
