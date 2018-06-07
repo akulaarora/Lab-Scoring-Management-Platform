@@ -21,6 +21,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class ScoringDBInteract extends DBInteract
@@ -149,9 +150,9 @@ public class ScoringDBInteract extends DBInteract
 	 * @throws SQLException
 	 */
 	
-	public DBPullObject getLabNames() throws SQLException
+	public List<String> getLabNames() throws SQLException
 	{	
-		ArrayList<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<>();
 		String sql = "select column_name from information_schema.columns where table_name=?";
 		
 		PreparedStatement pS = getConnection().prepareStatement(sql);
@@ -162,7 +163,7 @@ public class ScoringDBInteract extends DBInteract
 			if(set.getString(1).matches("lab.*"))
 				list.add(set.getString(1));
 		}
-		return new DBPullObject(list);
+		return list;
 	}		
 	
 	/**
