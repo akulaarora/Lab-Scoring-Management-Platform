@@ -1,4 +1,5 @@
-package scoringmanagement;
+//package scoringmanagement;
+//some servlet goes here?
 
 import java.io.File;
 import java.io.FileWriter;
@@ -38,42 +39,40 @@ import java.util.Scanner;
  * The Invoker class handles compilation, execution, and file output for submitted lab files
  * Full execution of the class allows for a java file to be compiled, executed, and for the console output to be logged in a log file
  *
- * @author Max 
- * @author Darshan
+ * @author Max & Darshan
  * @version June 4
  */
 public class Invoker
 {
-	
-    private static final File DRIVER = new File("/Users/Akul/Uploads/12345-1-lab20_1/Driver.java");
-    private static final String OUTPUT_FILE = "C:/Users/Akul/Desktop/temp/output.txt";
-    
+    private static final File DRIVER = new File("C:/Users/Akul/Desktop/Lab-Scoring-Management-Platform/Lab-Scoring-Management-Platform/build/classes/scoringmanagement/Driver.java");
+    private static final String OUTPUT_FILE = "C:/Users/Akul/Desktop/Lab-Scoring-Management-Platform/Lab-Scoring-Management-Platform/build/classes/scoringmanagement/output.txt";
+
     /**
      * The compileLab method takes in lab submission data (LabName, and LabData)
      * A temp directory is setup that holds (.class, .java, and .txt files)
      * Allows files to be compiled, executed, and redirect output to a txt file
      * 
      * Compilation of the student's labs is done by the Java provided library  https://docs.oracle.com/javase/7/docs/api/javax/tools/JavaCompiler.html
-     * Compilation section is forked from  https://github.com/0416354917/Algorithms/blob/master/src/util/InlineCompiler.java                
+     * Compilation section is forked from  https://github.com/0416354917/Algorithms/blob/master/src/util/InlineCompiler.java 
      *        
-     * @param labName
-     * @param labData
+     * @param String labName
+     * @param String[] labFiles
      */
-    public static boolean compileLab(String labName, String labData)
+    public static boolean compileLab(String labName, String labFile)
     {
         boolean testCompile = false;
         StringBuilder labString = new StringBuilder(64);
-        labString.append(labData);//add the data into the string builder
-       
-        //CHANGE TO SERVER DIRECTORY using labName
-        if (DRIVER.getParentFile().exists() || DRIVER.getParentFile().mkdirs())
+        labString.append(labFile);//add the data into the string builder
+        labName = "C:/Users/Akul/Desktop/Lab-Scoring-Management-Platform/Lab-Scoring-Management-Platform/build/classes/scoringmanagement/" + labName + ".java";
+        File Driver = new File(labName);
+        if (Driver.getParentFile().exists() || Driver.getParentFile().mkdirs())
         {
             try
             {
                 Writer writer = null;
                 try
                 {
-                    writer = new FileWriter(DRIVER);
+                    writer = new FileWriter(Driver);
                     writer.write(labString.toString());//Writes the labString to the writer
                     writer.flush();
                 } 
@@ -88,54 +87,57 @@ public class Invoker
                         System.out.println("writer can't be closed");
                     }
                 }
-
-                /** Compilation Requirements *********************************************************************************************/
-                DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
-                JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-                StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, null, null);
-
-                // This sets up the class path that the compiler will use
-                List<String> optionList = new ArrayList<String>();
-                optionList.add("-classpath");
-                optionList.add(System.getProperty("java.class.path") + ";dist/InlineCompiler1.jar");
-
-                Iterable<? extends JavaFileObject> compilationUnit
-                        = fileManager.getJavaFileObjectsFromFiles(Arrays.asList(DRIVER));//helloWorldJava
-                JavaCompiler.CompilationTask task = compiler.getTask(
-                    null, 
-                    fileManager, 
-                    diagnostics, 
-                    optionList, 
-                    null, 
-                    compilationUnit);
-                /********************************************************************************************* Compilation Requirements **/
-                if (task.call()) 
-                {
-                    /** Load and execute *************************************************************************************************/
-                    // Create a new custom class loader, pointing to the directory that contains the compiled
-                    // classes, this should point to the top of the package structure!
-                    @SuppressWarnings("resource")
-                    URLClassLoader classLoader = new URLClassLoader(new URL[]{new File("./").toURI().toURL()});
-                    // Load the class from the classloader by name....
-                    Class<?> loadedClass = classLoader.loadClass("DRIVER");//"C:/Users/^Water_Bear/Desktop/compiletest/HelloWorld"
-                    // Create a new instance...
-                    Object obj = loadedClass.newInstance();
-                    /************************************************************************************************* Load and execute **/
-                } 
-                else 
-                {
-                    for (Diagnostic<? extends JavaFileObject> diagnostic : diagnostics.getDiagnostics()) 
-                    {
-                        System.out.format("Error on line %d in %s%n",//if the program could not be loaded into a class
-                            diagnostic.getLineNumber(),
-                            diagnostic.getSource().toUri());
-                    }
-                }
-                fileManager.close();//close the stream
-            } 
-            catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException exp) 
+            }
+            catch (Exception e) 
             {
-                exp.printStackTrace();//deal with multiple exceptions
+                System.out.println("Writer not executed correctly");//deal with multiple exceptions
+            }
+
+            /** Compilation Requirements *********************************************************************************************/
+            DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+            JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+            StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, null, null);
+
+            // This sets up the class path that the compiler will use
+            List<String> optionList = new ArrayList<String>();
+            optionList.add("-classpath");
+            optionList.add(System.getProperty("java.class.path") + ";dist/InlineCompiler1.jar");
+
+            Iterable<? extends JavaFileObject> compilationUnit
+                    = fileManager.getJavaFileObjectsFromFiles(Arrays.asList(Driver));
+            JavaCompiler.CompilationTask task = compiler.getTask(
+                null, 
+                fileManager, 
+                diagnostics, 
+                optionList, 
+                null, 
+                compilationUnit);
+            /********************************************************************************************* Compilation Requirements **/
+            if (task.call()) 
+            {
+                /********************************************************************************************* Load/Execute **/
+                // Create a new custom class loader, pointing to the directory that contains the compiled
+                // classes, this should point to the top of the package structure!
+                //@SuppressWarnings("resource")
+                try
+                {
+                    URLClassLoader classLoader = new URLClassLoader(new URL[]{new File("./").toURI().toURL()});//create .class file
+                    testCompile = true;
+                }
+                catch(Exception e)
+                {
+                    System.out.print("classLoader did not load correctly");
+                }
+                /************************************************************************************************* Load and execute */
+            } 
+            else 
+            {
+                for (Diagnostic<? extends JavaFileObject> diagnostic : diagnostics.getDiagnostics()) 
+                {
+                    System.out.format("Error on line %d in %s%n",//if the program could not be loaded into a class
+                        diagnostic.getLineNumber(),
+                        diagnostic.getSource().toUri());
+                }
             }
         }
         
@@ -148,13 +150,13 @@ public class Invoker
      * Modified from:
      * https://github.com/AlmasB/CodeSamplesJava/blob/master/src/demo/InvokerDemo.java
      * 
-     * @param classFileName
+     * @param String classFileName
      */
     public static boolean runProgram(String classFileName)
     {
         outputConsole();//Redirect from console stream to txt
-   
         boolean testExec = false;
+        
         Class[] argTypes = new Class[1];
         argTypes[0] = String[].class;//Enter the classFileName into the array
        
@@ -188,7 +190,7 @@ public class Invoker
         {
             System.err.println("main(String[]) in class "+ classFileName +" is not public");//main not public
         }
-        
+       
         return testExec;
     }
     
@@ -198,9 +200,9 @@ public class Invoker
     public static void outputConsole()
     {
         try
-        {//set to environment variables using labname
-            System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(OUTPUT_FILE)), true));//set the directory for the output.txt
-        }
+        {//set the output stream
+            System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream("C:/Users/Akul/Desktop/Lab-Scoring-Management-Platform/Lab-Scoring-Management-Platform/build/classes/scoringmanagement/output.txt")), true));
+        }//set the directory for the output.txt // does not handle variables
         catch(Exception e)
         {
             System.err.print("Output stream could not be setup correctly");
