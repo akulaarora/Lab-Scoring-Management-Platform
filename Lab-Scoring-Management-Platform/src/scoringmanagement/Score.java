@@ -1,3 +1,5 @@
+package scoringmanagement;
+
 import java.util.*;
 
 /**
@@ -104,7 +106,7 @@ public class Score
     * 
     * @return Double scoreList
     */
-   public Double getScore()
+   public Double getScoreValue()
    {
        Double scoreList;
        

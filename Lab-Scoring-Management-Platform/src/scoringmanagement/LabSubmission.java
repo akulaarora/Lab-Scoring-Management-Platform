@@ -1,6 +1,8 @@
 package scoringmanagement;
 
+import dbinteract.ScoringDBInteract;
 import java.io.File;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -43,7 +45,7 @@ public class LabSubmission
     	myID = id;
     	myLabName = lab;
     	myFiles = files;
-    	myScore = Scorer.studentScore(myLabName, myFiles);
+    	setScore();
     }
     
     /**
@@ -90,8 +92,8 @@ public class LabSubmission
     public void setFiles(List<File> files)
     {
     	myFiles = files;
-    	if (getLabName() != "")
-    		myScore = Scorer.studentScore(getLabName(), getFiles());
+    	if (getLabName() != "") // If lab name has been provided
+    		setScore();
     }
     
     /**
@@ -139,6 +141,16 @@ public class LabSubmission
     }
     
     /**
+     * Gets Score object containing score data.
+     * @return Score
+     */
+    public Score getScore()
+    {
+    	return myScore;
+    }
+    
+    
+    /**
      * Converts lab submission into String.
      * @return String lab submission information
      */
@@ -149,5 +161,30 @@ public class LabSubmission
     	return output;
     }
     
-    
+    /**
+     * Sets score. Handles scoring of labs.
+     * Uses lab name and files passed.
+     */
+    // Handles the scoring of labs
+    public void setScore()
+    {
+    	Score score;
+    	ScoringDBInteract dbInteract = new ScoringDBInteract();
+    	
+    	// Get score
+    	score = Scorer.scoreLab();
+    	
+    	 // Pushes name and id to database.
+    	try
+    	{
+    		dbInteract.pushName(getID(), getName());
+    		dbInteract.pushScore(getScore().getScoreValue(), getID(), myLabName); // Pushes score
+    	}
+    	catch (SQLException e) // Will occur if name/id is already in database or errors in pushing. Not to be handled.
+    	{
+    		e.printStackTrace(); 
+    	}
+    	
+    	
+    }
 }

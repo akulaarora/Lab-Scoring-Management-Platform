@@ -1,3 +1,7 @@
+package scoringmanagement;
+
+import servlets.SpecSubmissionServlet;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -40,19 +44,57 @@ import org.apache.commons.io.FileUtils;//http://commons.apache.org/proper/common
  */
 public class Scorer
 {
+	private static final String OUTPUT_FILE = "C:/Users/^Water_Bear/Desktop/temp/output.txt";
+	
+	
+	public static Score scoreLab(String labName, List<File> files)
+	{ 	
+		// Scoring
+		Score score;
+		
+		// File Contents
+		String[] fileContents = new String[files.size()];
+		String[] fileNames = new String[files.size()];
+		
+		// Get the filepath for the lab specs
+		SpecSubmissionServlet specSubmission = new SpecSubmissionServlet();
+		String labSpecFolder = specSubmission.getUploadDir().getPath(); 
+		File labSpecFile = new File(labSpecFolder + "/" + labName + ".txt");
+		
+		// Create arrays for use. File names and contents.
+		for (int i = 0; i < files.size(); i++)
+		{
+			fileNames[i] = files.get(i).getName();
+			fileContents[i] = fileToString(files.get(i));
+		}
+		
+		score = score(fileToString(labSpecFile), fileContents, fileNames);
+		
+		return score;
+	}
+	
+	private static String fileToString(File in) 
+	{
+		FileInput input = new FileInput(in.getPath());
+		String temp = "";
+		while (input.hasMoreLines()) {
+			temp += input.readLine() + " ";
+		}
+		return temp;
+	}
     /**
      * Acts as the main method and is the only outward facing method of class.
      * scoreStudent calls all other methods within the class.
      * Compilation of the student's labs is done by the Java provided library --> https://docs.oracle.com/javase/7/docs/api/javax/tools/JavaCompiler.html
      * Compilation section is forked from ---> https://github.com/0416354917/Algorithms/blob/master/src/util/InlineCompiler.java
-     * Bash setup and commandline is forked from ---> https://stackoverflow.com/questions/26830617/java-running-bash-commands
-     * Bash exectution is run by --> https://docs.oracle.com/javase/7/docs/api/java/lang/ProcessBuilder.html
+     * Bash setup and command line is forked from ---> https://stackoverflow.com/questions/26830617/java-running-bash-commands
+     * Bash execution is run by --> https://docs.oracle.com/javase/7/docs/api/java/lang/ProcessBuilder.html
      * 
      * @param String labSpec
      * @param Sends array of labFiles
      * @return scoreData array holds the score output of the student's lab and returns the output to their student client
      */
-    public static Score scoreStudent(String labSpec, String[] labFiles, String[] labNames)
+    public static Score score(String labSpec, String[] labFiles, String[] labNames)
     {
         Object[] scoreData;
         Object[] labData;
@@ -102,8 +144,7 @@ public class Scorer
      */
     public static double calcScore(String specName, boolean testExec, boolean testComp)
     {
-        FileInput correctFile = new FileInput("C:/Users/^Water_Bear/Desktop/temp/output.txt");
-        FileInput wrongFile;
+        FileInput outputFile = new FileInput(OUTPUT_FILE);
         FileInput countFile;
         
         double avgScore = 0.0;
@@ -144,9 +185,9 @@ public class Scorer
         String[] labFile = new String[numLines];
         checkOut = new Boolean[numLines];
         int x = 0;
-        while(correctFile.hasMoreLines())
+        while(outputFile.hasMoreLines())
         {
-            labFile[x] = correctFile.readLine().toLowerCase(); 
+            labFile[x] = outputFile.readLine().toLowerCase(); 
             x++;
         }
         
