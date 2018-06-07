@@ -54,7 +54,7 @@ public class Invoker
      *                        ---> .java
      *        
      * @param String labName
-     * @param String[] labFiles
+     * @param String labFile
      */
     public static boolean compileLab(String labName, String labFile)
     {
@@ -149,9 +149,9 @@ public class Invoker
      * @param String classFileName
      * @param String labName
      */
-    public static boolean runProgram(String labName, String classFileName)
+    public static boolean runProgram(String classFileName)
     {
-        outputConsole(labName);
+        outputConsole();
    
         boolean testExec = false;
         Class[] argTypes = new Class[1];
@@ -195,13 +195,12 @@ public class Invoker
      * Sets the Output Stream to be linked to a txt file instead of console
      * 
      * @param int trialNum - Sets the txt file name
-     * @param String labName
      */
-    public static void outputConsole(String labName)
+    public static void outputConsole()
     {
         try
         {//set to environment variables using labname
-            System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream("C:/Users/^Water_Bear/Desktop/compiletest/output.txt")), true));
+            System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream("C:/Users/^Water_Bear/Desktop/temp/output.txt")), true));
         }
         catch(Exception e)
         {
